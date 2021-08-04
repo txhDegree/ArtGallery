@@ -24,7 +24,7 @@
         - Artist Gallery</title>
 </head>
 <body id="page-top">
-    <asp:ContentPlaceHolder ID="Content" runat="server"></asp:ContentPlaceHolder>
+    <form runat="server" id="form"><asp:ContentPlaceHolder ID="Content" runat="server"></asp:ContentPlaceHolder></form>
 </body>
     <asp:ContentPlaceHolder ID="MasterScript" runat="server"></asp:ContentPlaceHolder>
 </html>
