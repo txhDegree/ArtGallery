@@ -19,7 +19,7 @@ namespace ArtGallery.Artist
         {
             switch (Roles.GetRolesForUser(Login1.UserName)[0]) {
                 case "Customer":
-                    Response.Redirect("");
+                    Response.Redirect("/Customer/Artworks/List.aspx");
                     break;
                 case "Admin":
                     Response.Redirect("");

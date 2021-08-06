@@ -17,7 +17,7 @@
     <asp:ContentPlaceHolder ID="MasterStyle" runat="server"></asp:ContentPlaceHolder>
     <!-- JavaScript -->
     <script src="/public/vendor/jquery/jquery.min.js" defer="defer"></script>
-    <script src="/public/vendor/bootstrap/js/bootstrap.js" defer="defer"></script>
+    <script src="/public/vendor/bootstrap/js/bootstrap.bundle.min.js" defer="defer"></script>
     <script src="/public/vendor/jquery-easing/jquery.easing.min.js" defer="defer"></script>
     <script src="/public/app.js" defer="defer"></script>
     <title><asp:ContentPlaceHolder ID="MasterTitle" runat="server"></asp:ContentPlaceHolder></title>

@@ -7,7 +7,7 @@
         document.querySelector('body').classList.add('bg-gradient-primary');
     </script>
 </asp:Content>
-<asp:Content ID="title" ContentPlaceHolderID="MasterTitle" runat="server">Login - Artist</asp:Content>
+<asp:Content ID="title" ContentPlaceHolderID="MasterTitle" runat="server">Login Your Art Gallery Account</asp:Content>
 <asp:Content ID="MainContent" ContentPlaceHolderID="Content" runat="server">
     <div class="container">
         <!-- Outer Row -->
@@ -41,11 +41,11 @@
                                         </LayoutTemplate>
                                     </asp:Login>
                                     <hr>
-                                    <div class="text-center">
+                                    <!-- <div class="text-center">
                                         <a class="small" href="forgot-password.html">Forgot Password?</a>
-                                    </div>
+                                    </div> -->
                                     <div class="text-center">
-                                        <a class="small" href="/Artist/register.aspx">Create a Customer Account!</a>
+                                        <a class="small" href="/Customer/register.aspx">Create a Customer Account!</a>
                                     </div>
                                     <div class="text-center">
                                         <a class="small" href="/Artist/register.aspx">Create an Artist Account!</a>

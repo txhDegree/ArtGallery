@@ -81,18 +81,18 @@
                                         <ContentTemplate>
                                             <div class="alert alert-success">Your account has been successfully created.</div>
                                             <div>
-                                                <a class="btn btn-primary btn-block" href="login.aspx" />Login Now</a>
+                                                <a class="btn btn-primary btn-block" href="/login.aspx" />Login Now</a>
                                             </div>
                                         </ContentTemplate>
                                     </asp:CompleteWizardStep>
                                 </WizardSteps>
                             </asp:CreateUserWizard>
                             <hr>
-                            <div class="text-center">
+                            <!-- <div class="text-center">
                                 <a class="small" href="forgot-password.html">Forgot Password?</a>
-                            </div>
+                            </div> -->
                             <div class="text-center">
-                                <a class="small" href="/Artist/login.aspx">Already have an account? Login!</a>
+                                <a class="small" href="/login.aspx">Already have an account? Login!</a>
                             </div>
                         </div>
                     </div>

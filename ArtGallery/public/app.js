@@ -8,6 +8,8 @@
     if ($(".sidebar").hasClass("toggled")) {
       $('.sidebar .collapse').collapse('hide');
     };
+    e.preventDefault();
+    e.returnValue=false;
   });
 
   // Close any open menu accordions when window is resized below 768px
@@ -53,4 +55,7 @@
     e.preventDefault();
   });
 
+    $(document).ready(function(e) {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 })(jQuery); // End of use strict

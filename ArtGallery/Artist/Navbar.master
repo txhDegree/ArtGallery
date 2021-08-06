@@ -33,7 +33,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseArtworks"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="far fa-fw fa-images"></i>
                     <span>Artworks</span>
                 </a>
                 <div id="collapseArtworks" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
