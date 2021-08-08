@@ -43,7 +43,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Stripe.net, Version=39.62.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stripe.net.39.62.0\lib\net461\Stripe.net.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -75,8 +95,14 @@
     <Content Include="Artist\Artworks\Create.aspx" />
     <Content Include="Artist\Artworks\Edit.aspx" />
     <Content Include="Artist\Artworks\List.aspx" />
+    <Content Include="Customer\Artworks\Details.aspx" />
     <Content Include="Customer\Artworks\List.aspx" />
     <Content Include="Customer\Carts\List.aspx" />
+    <Content Include="Customer\Orders\List.aspx" />
+    <Content Include="Customer\Orders\NewOrder.aspx" />
+    <Content Include="Customer\Payments\Cancel.aspx" />
+    <Content Include="Customer\Payments\MakePayment.aspx" />
+    <Content Include="Customer\Payments\PaymentSuccess.aspx" />
     <Content Include="Customer\register.aspx" />
     <Content Include="Customer\Wishlists\List.aspx" />
     <Content Include="login.aspx" />
@@ -1768,6 +1794,13 @@
     <Compile Include="Artist\Artworks\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Customer\Artworks\Details.aspx.cs">
+      <DependentUpon>Details.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Customer\Artworks\Details.aspx.designer.cs">
+      <DependentUpon>Details.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Customer\Artworks\List.aspx.cs">
       <DependentUpon>List.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1788,6 +1821,41 @@
     </Compile>
     <Compile Include="Customer\Navbar.master.designer.cs">
       <DependentUpon>Navbar.master</DependentUpon>
+    </Compile>
+    <Compile Include="Customer\Orders\List.aspx.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Customer\Orders\List.aspx.designer.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Customer\Orders\NewOrder.aspx.cs">
+      <DependentUpon>NewOrder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Customer\Orders\NewOrder.aspx.designer.cs">
+      <DependentUpon>NewOrder.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Customer\Payments\Cancel.aspx.cs">
+      <DependentUpon>Cancel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Customer\Payments\Cancel.aspx.designer.cs">
+      <DependentUpon>Cancel.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Customer\Payments\MakePayment.aspx.cs">
+      <DependentUpon>MakePayment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Customer\Payments\MakePayment.aspx.designer.cs">
+      <DependentUpon>MakePayment.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Customer\Payments\PaymentSuccess.aspx.cs">
+      <DependentUpon>PaymentSuccess.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Customer\Payments\PaymentSuccess.aspx.designer.cs">
+      <DependentUpon>PaymentSuccess.aspx</DependentUpon>
     </Compile>
     <Compile Include="Customer\register.aspx.cs">
       <DependentUpon>register.aspx</DependentUpon>

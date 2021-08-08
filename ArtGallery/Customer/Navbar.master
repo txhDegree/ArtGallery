@@ -16,7 +16,7 @@
                 <div class="sidebar-brand-icon">
                     <img src="/public/img/logo.jpg" id="logo"/>
                 </div>
-                <div class="sidebar-brand-text mx-3">Artist Dashboard</div>
+                <div class="sidebar-brand-text mx-3">Customer Dashboard</div>
             </a>
 
             <!-- Divider -->
@@ -37,7 +37,13 @@
             <li class="nav-item">
                 <a class="nav-link" href="/Customer/Carts/List.aspx">
                     <i class="fa fa-fw fa-shopping-cart"></i>
-                    <span>My Cart</span></a>
+                    <span>My Carts</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/Customer/Orders/List.aspx">
+                    <i class="fa fa-fw fa-truck-loading"></i>
+                    <span>My Orders</span></a>
             </li>
 
             <!-- Nav Item - Pages Collapse Menu -->

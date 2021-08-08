@@ -12,11 +12,15 @@
 <asp:Content ID="Content" ContentPlaceHolderID="Content" runat="server">
     <h1 class="h3 mb-4 text-gray-800">My Artworks</h1>
     <div class="row d-flex">
-
-        
-        <asp:Repeater ID="Repeater1" runat="server" DataSourceID="ArtistArtworkSource">
+        <div class="col-12 text-center" runat="server" visible="false" id="NoRecords">
+            <div class="row">
+                <div class="col-12"><h3>Oops... No Records Are Abailable</h3></div>
+                <div class="col-md-6 mx-auto"><img class="w-100" src="/public/img/searching.svg" alt="No Record Found Img" /></div>
+            </div>
+        </div>
+        <asp:Repeater ID="Repeater1" runat="server" DataSourceID="ArtistArtworkSource" Visible="true" OnPreRender="Repeater1_PreRender">
             <ItemTemplate>
-                <div class="col-md-3 p-2">
+                <div class="col-xl-3 col-lg-4 col-md-6 p-2">
                     <div class="card">
                         <img class="card-img-top" src="/public/img/image.svg">
                         <div class="card-body">

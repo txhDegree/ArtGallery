@@ -8,7 +8,7 @@
         }
     </style>
 </asp:Content>
-<asp:Content ID="title" ContentPlaceHolderID="title" runat="server">My Artworks - Artist</asp:Content>
+<asp:Content ID="title" ContentPlaceHolderID="title" runat="server">My Wishlist - Customer</asp:Content>
 <asp:Content ID="Content" ContentPlaceHolderID="Content" runat="server">
     <% if (isAddedToCart) { %>
         <div class="alert alert-success">Item is added to your cart successfully!</div>
@@ -19,13 +19,24 @@
     <% }%>
     <h1 class="h3 mb-4 text-gray-800">My Wishlist</h1>
     <div class="row d-flex">
-        <asp:Repeater ID="Repeater1" runat="server" DataSourceID="ArtworkSource" OnItemCommand="Repeater1_ItemCommand" >
+        <div class="col-12 text-center" runat="server" visible="false" id="NoRecords">
+            <div class="row">
+                <div class="col-12"><h3>Oops... No Records Are Abailable</h3></div>
+                <div class="col-md-6 mx-auto"><img class="w-100" src="/public/img/searching.svg" alt="No Record Found Img" /></div>
+            </div>
+        </div>
+        <table>
+            <tr>
+                <td></td>
+            </tr>
+        </table>
+        <asp:Repeater ID="Repeater1" runat="server" DataSourceID="ArtworkSource" OnItemCommand="Repeater1_ItemCommand" OnPreRender="Repeater1_PreRender" >
             <ItemTemplate>
-                <div class="col-md-3 p-2">
+                <div class="col-xl-3 col-lg-4 col-md-6 p-2">
                     <div class="card">
                         <img class="card-img-top" src="/public/img/image.svg">
                         <div class="card-body">
-                            <h5 class="card-title"><%# Eval("Title") %></h5>
+                            <h5 class="card-title"><a href='/Customer/Artworks/Details.aspx?Id=<%# Eval("Id") %>'><%# Eval("Title") %></a></h5>
                             <p class="card-text text-overflow-hide"><%# Eval("Description") %></p>
                             <p class="card-text"><span class="text-success font-weight-bold">RM <%# ((Decimal)Eval("Price")).ToString("F") %></span></p>
                             <p class="card-text"><span class="badge badge-info"><%# Eval("StockQuantity") %> Stock Left</span></p>

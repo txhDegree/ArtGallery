@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <asp:LinkButton runat="server" ID="saveBtn" CssClass="btn btn-primary"><i class="fa fa-fw fa-save"></i> Save</asp:LinkButton>
+                    <asp:LinkButton runat="server" ID="saveBtn" CssClass="btn btn-primary" OnClick="saveBtn_Click"><i class="fa fa-fw fa-save"></i> Save</asp:LinkButton>
                 </div>
             </div>
         </div>

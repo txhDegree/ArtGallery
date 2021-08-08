@@ -7,6 +7,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Configuration;
 using System.Data.SqlClient;
+using Stripe;
+using Stripe.Checkout;
 
 namespace ArtGallery.Customer.Carts
 {
@@ -18,12 +20,37 @@ namespace ArtGallery.Customer.Carts
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("SELECT SUM([C].[Quantity]) AS TotalCount, SUM([A].[Price] * [C].[Quantity]) AS TotalAmount FROM[Artworks] A RIGHT JOIN[Carts] C ON[A].[Id] = [C].[ArtworkId], [aspnet_Users] U WHERE([A].[isVisible] = 1) AND CustomerId = @CustomerId AND[A].[ArtistId] = [U].[UserId]", conn); ;
+            cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
+            SqlDataReader reader;
+            reader = cmd.ExecuteReader();
             
+            if (reader.HasRows)
+            {
+                reader.Read();
+                
+                lblTotalCount.InnerText = Convert.IsDBNull(reader["TotalCount"]) ? "0" : reader["TotalCount"].ToString();
+                lblTotalAmount.InnerText = "RM " +  (Convert.IsDBNull(reader["TotalAmount"]) ? "0.00" : ((Decimal)reader["TotalAmount"]).ToString("F"));
+            }
+            reader.Close();
+            conn.Close();
+
         }
 
         protected void Repeater1_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
  
+        }
+
+        protected void Repeater1_PreRender(object sender, EventArgs e)
+        {
+            if (Repeater1.Items.Count < 1)
+            {
+                NoRecords.Visible = true;
+                Repeater1.Visible = false;
+            }
         }
     }
 }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Security;
 using System.Configuration;
 using System.Data.SqlClient;
 
@@ -89,6 +89,14 @@ namespace ArtGallery.Customer.Artworks
             }
             conn.Close();
             Repeater1.DataBind();
+        }
+
+        protected void Repeater1_PreRender(object sender, EventArgs e)
+        {
+            if (Repeater1.Items.Count < 1) {
+                NoRecords.Visible = true;
+                Repeater1.Visible = false;
+            }
         }
     }
 }
