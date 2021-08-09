@@ -14,6 +14,7 @@ namespace ArtGallery.Customer.Carts
 {
     public partial class List : System.Web.UI.Page
     {
+        protected Boolean checkoutAvailable = true;
         protected void Page_Init(object sender, EventArgs e)
         {
             ArtworkSource.SelectParameters["CustomerId"].DefaultValue = Membership.GetUser().ProviderUserKey.ToString();
@@ -30,9 +31,12 @@ namespace ArtGallery.Customer.Carts
             if (reader.HasRows)
             {
                 reader.Read();
-                
-                lblTotalCount.InnerText = Convert.IsDBNull(reader["TotalCount"]) ? "0" : reader["TotalCount"].ToString();
-                lblTotalAmount.InnerText = "RM " +  (Convert.IsDBNull(reader["TotalAmount"]) ? "0.00" : ((Decimal)reader["TotalAmount"]).ToString("F"));
+                checkoutAvailable = !Convert.IsDBNull(reader["TotalCount"]);
+                if (!Convert.IsDBNull(reader["TotalCount"])) {
+                    lblTotalCount.InnerText = reader["TotalCount"].ToString();
+                    lblTotalAmount.InnerText = "RM " + ((Decimal)reader["TotalAmount"]).ToString("F");
+                }
+
             }
             reader.Close();
             conn.Close();

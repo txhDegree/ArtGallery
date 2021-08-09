@@ -48,11 +48,13 @@
             </div>
         </div>
     </div>
+    <% if(paymentRequired) { %>
     <div class="row mt-3">
         <div class="col-12">
             <a href="/Customer/Payments/MakePayment.aspx" class="btn btn-success btn-block"><i class="fa fa-fw fa-money-bill-wave"></i> Make Payment Now</a>
         </div>
     </div>
+    <% } %>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="VendorScript" runat="server">
 </asp:Content>

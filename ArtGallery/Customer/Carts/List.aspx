@@ -14,7 +14,7 @@
     <div class="row d-flex">
         <div class="col-12 text-center" runat="server" visible="false" id="NoRecords">
             <div class="row">
-                <div class="col-12"><h3>Oops... No Records Are Abailable</h3></div>
+                <div class="col-12"><h3>Oops... No Records Are Available</h3></div>
                 <div class="col-md-6 mx-auto"><img class="w-100" src="/public/img/searching.svg" alt="No Record Found Img" /></div>
             </div>
         </div>
@@ -42,6 +42,7 @@
             </SelectParameters>
         </asp:SqlDataSource>
     </div>
+    <% if(checkoutAvailable) { %>
     <div class="row mt-3">
         <div class="col-md-6 mx-auto">
             <div class="card">
@@ -67,6 +68,7 @@
             </div>
         </div>
     </div>
+    <% } %>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="VendorScript" runat="server">
 </asp:Content>
