@@ -1,0 +1,81 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Customer/Navbar.master" AutoEventWireup="true" CodeBehind="Create.aspx.cs" Inherits="ArtGallery.Customer.Addresses.Create" %>
+<asp:Content ID="title" ContentPlaceHolderID="title" runat="server">Create New Address - Customer</asp:Content>
+<asp:Content ID="Content" ContentPlaceHolderID="Content" runat="server">
+    <h1 class="h3 mb-4 text-gray-800">Create New Address</h1>
+    <div class="row">
+        <div class="col-sm-6 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <% if (isCreated) { %>
+                    <div class="alert alert-success">
+                        New address is created successfully!
+                    </div>
+                    <% } %>
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <label>Address Title</label>
+                            <asp:TextBox runat="server" CssClass="form-control" placeholder="e.g. Home, Office..." ID="txtTitle" MaxLength="50"></asp:TextBox>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Receiver Name</label>
+                            <asp:TextBox runat="server" CssClass="form-control" placeholder="Receiver Name" ID="txtName" MaxLength="50"></asp:TextBox>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Receiver Contact</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">+60</span>
+                                </div>
+                                <asp:TextBox runat="server" CssClass="form-control" placeholder="234567890" ID="txtContact" MaxLength="9"></asp:TextBox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <label>Address</label>
+                            <asp:TextBox runat="server" CssClass="form-control" TextMode="Multiline" ID="txtAddress" MaxLength="64"></asp:TextBox>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>State</label>
+                            <asp:DropDownList CssClass="form-control" ID="ddlState" runat="server" DataSourceID="SqlDataSource1" DataTextField="StateName" DataValueField="StateId" AutoPostBack="true">
+                                <asp:ListItem>-- Select State --</asp:ListItem>
+                            </asp:DropDownList>
+                            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ArtDBConnStr %>" SelectCommand="SELECT * FROM [States] ORDER BY StateName"></asp:SqlDataSource>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>City</label>
+                            <asp:DropDownList CssClass="form-control" ID="ddlCity" runat="server" DataSourceID="SqlDataSource2" DataTextField="CityName" DataValueField="CityId" AutoPostBack="true">
+                                <asp:ListItem Value="0">-- Select City --</asp:ListItem>
+                            </asp:DropDownList>
+                            <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:ArtDBConnStr %>" SelectCommand="SELECT [CityId], [CityName] FROM [Cities] WHERE ([StateId] = @StateId) ORDER BY CityName">
+                                <SelectParameters>
+                                    <asp:ControlParameter ControlID="ddlState" Name="StateId" PropertyName="SelectedValue" Type="String" DefaultValue="0" />
+                                </SelectParameters>
+                            </asp:SqlDataSource>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <label>Postal Code</label>
+                            <asp:DropDownList CssClass="form-control" ID="ddlPostalCode" runat="server" DataSourceID="SqlDataSource3" DataTextField="PostalCode" DataValueField="PostalCode">
+                                <asp:ListItem>-- Select Postal Code --</asp:ListItem>
+                            </asp:DropDownList>
+                            <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:ArtDBConnStr %>" SelectCommand="SELECT * FROM [PostalCodes] WHERE ([CityId] = @CityId) ORDER BY PostalCode">
+                                <SelectParameters>
+                                    <asp:ControlParameter ControlID="ddlCity" Name="CityId" PropertyName="SelectedValue" Type="Int32" DefaultValue="0" />
+                                </SelectParameters>
+                            </asp:SqlDataSource>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <asp:LinkButton runat="server" ID="saveBtn" CssClass="btn btn-primary" OnClick="saveBtn_Click"><i class="fa fa-fw fa-save"></i> Save</asp:LinkButton>
+                </div>
+            </div>
+        </div>
+    </div>
+</asp:Content>

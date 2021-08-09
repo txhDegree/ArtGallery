@@ -95,9 +95,16 @@
     <Content Include="Artist\Artworks\Create.aspx" />
     <Content Include="Artist\Artworks\Edit.aspx" />
     <Content Include="Artist\Artworks\List.aspx" />
+    <Content Include="Artist\Orders\Details.aspx" />
+    <Content Include="Artist\Orders\List.aspx" />
+    <Content Include="Customer\Addresses\Edit.aspx" />
+    <Content Include="Customer\Addresses\Create.aspx" />
+    <Content Include="Customer\Addresses\List.aspx" />
     <Content Include="Customer\Artworks\Details.aspx" />
     <Content Include="Customer\Artworks\List.aspx" />
     <Content Include="Customer\Carts\List.aspx" />
+    <Content Include="Customer\Orders\OutOfStock.aspx" />
+    <Content Include="Customer\Orders\Details.aspx" />
     <Content Include="Customer\Orders\List.aspx" />
     <Content Include="Customer\Orders\NewOrder.aspx" />
     <Content Include="Customer\Payments\Cancel.aspx" />
@@ -1794,6 +1801,41 @@
     <Compile Include="Artist\Artworks\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Artist\Orders\Details.aspx.cs">
+      <DependentUpon>Details.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Artist\Orders\Details.aspx.designer.cs">
+      <DependentUpon>Details.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Artist\Orders\List.aspx.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Artist\Orders\List.aspx.designer.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Customer\Addresses\Edit.aspx.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Customer\Addresses\Edit.aspx.designer.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Customer\Addresses\Create.aspx.cs">
+      <DependentUpon>Create.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Customer\Addresses\Create.aspx.designer.cs">
+      <DependentUpon>Create.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Customer\Addresses\List.aspx.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Customer\Addresses\List.aspx.designer.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Customer\Artworks\Details.aspx.cs">
       <DependentUpon>Details.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1821,6 +1863,20 @@
     </Compile>
     <Compile Include="Customer\Navbar.master.designer.cs">
       <DependentUpon>Navbar.master</DependentUpon>
+    </Compile>
+    <Compile Include="Customer\Orders\OutOfStock.aspx.cs">
+      <DependentUpon>OutOfStock.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Customer\Orders\OutOfStock.aspx.designer.cs">
+      <DependentUpon>OutOfStock.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Customer\Orders\Details.aspx.cs">
+      <DependentUpon>Details.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Customer\Orders\Details.aspx.designer.cs">
+      <DependentUpon>Details.aspx</DependentUpon>
     </Compile>
     <Compile Include="Customer\Orders\List.aspx.cs">
       <DependentUpon>List.aspx</DependentUpon>
@@ -1975,6 +2031,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="public\img\" />
+    <Folder Include="Storage\Artworks\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

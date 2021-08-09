@@ -5,7 +5,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6 d-flex justify-content-center align-items-center" style="">
-                    <img style="max-width: 100%; max-height: 100%" src="/public/img/image.svg" alt="Artwork Image" />
+                    <img runat="server" id="image" style="max-width: 100%; max-height: 100%" src="/public/img/image.svg" alt="Artwork Image" />
                 </div>
                 <div class="col-md-6">
                     <h1 class="mt-4" runat="server" id="lblTitle">Title</h1>

@@ -14,9 +14,21 @@ namespace ArtGallery.Customer.Orders
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            int addressId = Convert.ToInt32(Request.Params["Id"]);
             SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
             conn.Open();
-            SqlCommand cmd = new SqlCommand("SELECT DISTINCT([U].[UserId]) AS ArtistId FROM Carts [C] LEFT JOIN Artworks [A] LEFT JOIN aspnet_Users [U] ON [A].[ArtistId] = U.[UserId] ON [C].[ArtworkId] = [A].[Id] WHERE [C].[CustomerId] = @CustomerId", conn);
+            SqlCommand cmd;
+            // Validate whether purchased amount is in range of stock amount
+            cmd = new SqlCommand("SELECT SUM(CASE WHEN TAP > StockQuantity THEN 1 ELSE 0 END) AS GreaterThan FROM (SELECT ArtworkId, SUM(Quantity) AS TAP FROM Carts WHERE CustomerId = @CustomerId GROUP BY ArtworkId) C, Artworks A WHERE C.ArtworkId = A.Id", conn);
+            cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
+            int result = (int)cmd.ExecuteScalar();
+            if(result > 0)
+            {
+                // invalid
+                conn.Close();
+                Response.Redirect("/Customer/Orders/OutOfStock.aspx");
+            }
+            cmd = new SqlCommand("SELECT DISTINCT([U].[UserId]) AS ArtistId FROM Carts [C] LEFT JOIN Artworks [A] LEFT JOIN aspnet_Users [U] ON [A].[ArtistId] = U.[UserId] ON [C].[ArtworkId] = [A].[Id] WHERE [C].[CustomerId] = @CustomerId", conn);
             cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
             SqlDataReader reader = cmd.ExecuteReader();
             
@@ -29,13 +41,20 @@ namespace ArtGallery.Customer.Orders
                     cmd2.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
                     cmd2.Parameters.AddWithValue("@ArtistId", artistId);
                     double totalAmount = Convert.ToDouble(cmd2.ExecuteScalar().ToString());
+                    
+                    // create order shipment
+                    cmd2 = new SqlCommand("INSERT INTO Shipments(ReceiverName, ReceiverContact, Address, City, PostalCode, State) OUTPUT INSERTED.Id SELECT ReceiverName, ReceiverContact, Address, City, PostalCode, State FROM Addresses WHERE Id = @Id", conn);
+                    cmd2.Parameters.AddWithValue("@Id", addressId);
+                    int shippingId = (int)cmd2.ExecuteScalar();
 
                     // create new order
-                    cmd2 = new SqlCommand("INSERT INTO Orders (Date, Status, TotalAmount, ShippingFee, AmountToPay, isPaid, CustomerId) OUTPUT INSERTED.Id VALUES (@Date, 'pending', @TotalAmount, 5.00, @AmountToPay, 0, @CustomerId)", conn);
+                    cmd2 = new SqlCommand("INSERT INTO Orders (Date, Status, TotalAmount, ShippingFee, AmountToPay, isPaid, CustomerId, ArtistId, ShipmentId) OUTPUT INSERTED.Id VALUES (@Date, 'pending', @TotalAmount, 5.00, @AmountToPay, 0, @CustomerId, @ArtistId, @ShipmentId)", conn);
                     cmd2.Parameters.AddWithValue("@Date", DateTime.Now);
                     cmd2.Parameters.AddWithValue("@TotalAmount", totalAmount);
                     cmd2.Parameters.AddWithValue("@AmountToPay", totalAmount + 5);
                     cmd2.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
+                    cmd2.Parameters.AddWithValue("@ArtistId", artistId);
+                    cmd2.Parameters.AddWithValue("@ShipmentId", shippingId);
                     int orderId = (int)cmd2.ExecuteScalar();
 
                     // create order details
@@ -45,8 +64,20 @@ namespace ArtGallery.Customer.Orders
                     cmd2.Parameters.AddWithValue("@ArtistId", artistId);
                     cmd2.ExecuteNonQuery();
                 }
+                SqlCommand cmd3 = new SqlCommand("SELECT * FROM Carts WHERE CustomerId = @CustomerId", conn);
+                cmd3.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
+                SqlDataReader reader3 = cmd3.ExecuteReader();
+                SqlCommand cmd4;
+                if(reader3.HasRows)
+                while (reader3.Read()) {
+                    cmd4 = new SqlCommand("UPDATE Artworks SET StockQuantity = StockQuantity-@Quantity WHERE Id = @Id", conn);
+                    cmd4.Parameters.AddWithValue("@Quantity", Convert.ToInt32(reader3["Quantity"]));
+                    cmd4.Parameters.AddWithValue("@Id", Convert.ToInt32(reader3["ArtworkId"]));
+                    Console.WriteLine(cmd4.ExecuteNonQuery());
+                }
+                reader3.Close();
 
-                SqlCommand cmd3 = new SqlCommand("DELETE FROM Carts WHERE CustomerId = @CustomerId", conn);
+                cmd3 = new SqlCommand("DELETE FROM Carts WHERE CustomerId = @CustomerId", conn);
                 cmd3.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
                 cmd3.ExecuteNonQuery();
             }

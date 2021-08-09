@@ -11,6 +11,9 @@
 <asp:Content ID="title" ContentPlaceHolderID="title" runat="server">My Cart - Customer</asp:Content>
 <asp:Content ID="Content" ContentPlaceHolderID="Content" runat="server">
     <h1 class="h3 mb-4 text-gray-800">My Carts</h1>
+    <% if (isDeleted) { %>
+    <div class="alert alert-success">The artwork is deleted successfully.</div>
+    <% } %>
     <div class="row d-flex">
         <div class="col-12 text-center" runat="server" visible="false" id="NoRecords">
             <div class="row">
@@ -22,7 +25,7 @@
             <ItemTemplate>
                 <div class="col-xl-3 col-lg-4 col-md-6 p-2">
                     <div class="card">
-                        <img class="card-img-top" src="/public/img/image.svg">
+                        <img class="card-img-top" src='<%# Convert.IsDBNull(Eval("Image")) ? "/public/img/image.svg" : "/Storage/Artworks/" + Eval("Image").ToString() %>'>
                         <div class="card-body">
                             <h5 class="card-title"><a href='/Customer/Artworks/Details.aspx?Id=<%# Eval("Id") %>'><%# Eval("Title") %></a></h5>
                             <p class="card-text"><span class="badge badge-primary"><%# Eval("UserName") %></span> <span class="badge badge-info"><%# Eval("StockQuantity") %> Stock Left</span></p>
@@ -59,6 +62,20 @@
                                     <td><span runat="server" id="lblTotalAmount" class="text-success"></span></td>
                                 </tr>
                             </table>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Address:</label>
+                                <asp:RequiredFieldValidator CssClass="text-danger" runat="server" ID="reqAddress" ControlToValidate="AddressList" errormessage="Please select an address or create a new address!" />
+                                <asp:DropDownList CssClass="form-control" ID="AddressList" runat="server" DataSourceID="AddressSource" DataTextField="Label" DataValueField="Id" AppendDataBoundItems="true" OnSelectedIndexChanged="AddressList_SelectedIndexChanged" AutoPostBack="true" >
+                                    <asp:ListItem Value="">-- Select An Address --</asp:ListItem>
+                                </asp:DropDownList>
+                                <asp:SqlDataSource ID="AddressSource" runat="server" ConnectionString="<%$ ConnectionStrings:ArtDBConnStr %>" SelectCommand="SELECT [Id], [Label] FROM [Addresses] WHERE [CustomerId] = @CustomerId">
+                                    <SelectParameters>
+                                        <asp:Parameter Name="CustomerId" Type="String"/>
+                                    </SelectParameters>
+                                </asp:SqlDataSource>
+                            </div>
                         </div>
                     </div>
                 </div>

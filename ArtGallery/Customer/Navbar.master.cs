@@ -10,6 +10,9 @@ namespace ArtGallery.Customer
 {
     public partial class Navbar : System.Web.UI.MasterPage
     {
+        protected void Page_Init(object sender, EventArgs e) {
+            username.InnerText = Membership.GetUser().UserName;
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
 

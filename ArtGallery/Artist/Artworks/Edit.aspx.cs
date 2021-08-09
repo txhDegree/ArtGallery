@@ -68,6 +68,16 @@ namespace ArtGallery.Artist.Artworks
             cmd.Parameters.AddWithValue("@id", Request.QueryString["Id"]);
             cmd.Parameters.AddWithValue("@artistId", Membership.GetUser().ProviderUserKey);
             isUpdated = cmd.ExecuteNonQuery() > 0;
+            
+            if(FileUpload.HasFile) {
+                FileUpload.SaveAs(Server.MapPath("~/Storage/Artworks/" + Request.QueryString["Id"] + System.IO.Path.GetExtension(FileUpload.FileName)));
+                cmd = new SqlCommand("UPDATE Artworks SET Image = @Image WHERE Id = @Id AND ArtistId = @ArtistId",conn);
+                cmd.Parameters.AddWithValue("@Image", Request.QueryString["Id"] + System.IO.Path.GetExtension(FileUpload.FileName));
+                cmd.Parameters.AddWithValue("@Id", Request.QueryString["Id"]);
+                cmd.Parameters.AddWithValue("@artistId", Membership.GetUser().ProviderUserKey);
+                cmd.ExecuteNonQuery();
+            }
+
             conn.Close();
         }
     }

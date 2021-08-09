@@ -33,7 +33,7 @@
             <ItemTemplate>
                 <div class="col-xl-3 col-lg-4 col-md-6 p-2">
                     <div class="card">
-                        <img class="card-img-top" src="/public/img/image.svg">
+                        <img class="card-img-top" src='<%# Convert.IsDBNull(Eval("Image")) ? "/public/img/image.svg" : "/Storage/Artworks/" + Eval("Image").ToString() %>'>
                         <div class="card-body">
                             <h5 class="card-title"><a href='/Customer/Artworks/Details.aspx?Id=<%# Eval("Id") %>'><%# Eval("Title") %></a></h5>
                             <p class="card-text text-overflow-hide"><%# Eval("Description") %></p>

@@ -33,7 +33,7 @@
                                         <td><%# ((Decimal)Eval("ShippingFee")).ToString("F") %></td>
                                         <td><%# ((Decimal)Eval("AmountToPay")).ToString("F") %></td>
                                         <td><%# Convert.ToDateTime(Eval("Date")).ToString("ddd, dd/MM/yyyy hh:mm tt") %></td>
-                                        <td><%# Convert.ToBoolean(Eval("isPaid")) ? Convert.ToDateTime(Eval("Date")).ToString("ddd, dd/MM/yyyy hh:mm tt") : "-" %></td>
+                                        <td><%# Convert.ToBoolean(Eval("isPaid")) ? Convert.ToDateTime(Eval("PaidAt")).ToString("ddd, dd/MM/yyyy hh:mm tt") : "-" %></td>
                                     </tr>
                                 </ItemTemplate>
                             </asp:Repeater>

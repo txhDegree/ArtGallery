@@ -45,6 +45,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <label>Artwork Image</label>
+                            <asp:FileUpload runat="server" CssClass="form-control" ID="FileUpload" AllowMultiple="false" accept="image/*"/>
+                        </div>
+                    </div>
+                    <div class="col-12 d-flex justify-content-center align-items-center">
+                        <img src="" alt="" style="max-height: 300px; max-width: 300px;" class="d-none" id="img" />
+                    </div>
                 </div>
                 <div class="card-footer">
                     <asp:LinkButton runat="server" ID="saveBtn" CssClass="btn btn-primary" OnClick="saveBtn_Click"><i class="fa fa-fw fa-save"></i> Save</asp:LinkButton>
@@ -52,4 +61,13 @@
             </div>
         </div>
     </div>
+</asp:Content>
+<asp:Content ContentPlaceHolderID="VendorScript" runat="server" ID="script">
+    <script>
+        document.querySelector("#Content_Content_FileUpload").addEventListener('change', (e) => {
+            const img = document.querySelector("#img")
+            img.src = URL.createObjectURL(e.target.files[0])
+            img.classList.remove("d-none")
+        })
+    </script>
 </asp:Content>

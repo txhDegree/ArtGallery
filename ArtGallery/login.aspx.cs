@@ -21,11 +21,8 @@ namespace ArtGallery.Artist
                 case "Customer":
                     Response.Redirect("/Customer/Artworks/List.aspx");
                     break;
-                case "Admin":
-                    Response.Redirect("");
-                    break;
                 case "Artist":
-                    Response.Redirect("/Artist/Profile/EditProfile.aspx");
+                    Response.Redirect("/Artist/Artworks/List.aspx");
                     break;
             }
         }

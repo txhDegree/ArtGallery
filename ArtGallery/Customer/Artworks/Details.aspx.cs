@@ -35,6 +35,9 @@ namespace ArtGallery.Customer.Artworks
                 txtQty.Attributes.Add("max", reader["StockQuantity"].ToString());
                 rangeValidator.MaximumValue = reader["StockQuantity"].ToString();
                 rangeValidator.Text = "The quantity must be from 1 to " + reader["StockQuantity"].ToString();
+
+                image.Src = Convert.IsDBNull(reader["Image"]) ? "/public/img/image.svg" : "/Storage/Artworks/" + reader["Image"].ToString();
+
             }
             reader.Close();
             conn.Close();

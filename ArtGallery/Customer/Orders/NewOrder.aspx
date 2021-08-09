@@ -7,6 +7,7 @@
     <div class="row">
         <div class="col-12">
             <div class="alert alert-success">Your orders have been created successfully! to make payment for all unpaid orders, click the button below.</div>
+            <a href="/Customer/Payments/MakePayment.aspx" class="btn btn-success">Make Payment</a>
         </div>
     </div>
 </asp:Content>

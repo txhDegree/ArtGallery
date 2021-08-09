@@ -29,7 +29,7 @@ namespace ArtGallery.Artist.Artworks
             SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
             conn.Open();
 
-            SqlCommand cmd = new SqlCommand("INSERT INTO ARTWORKS (Title, Description, Year, Price, StockQuantity, isVisible, ArtistId) VALUES (@title, @desc, @year, @price, @stockQty, @isVisible, @artistId)", conn);
+            SqlCommand cmd = new SqlCommand("INSERT INTO ARTWORKS (Title, Description, Year, Price, StockQuantity, isVisible, ArtistId) OUTPUT INSERTED.Id VALUES (@title, @desc, @year, @price, @stockQty, @isVisible, @artistId)", conn);
             cmd.Parameters.AddWithValue("@title", title);
             cmd.Parameters.AddWithValue("@desc", desc);
             cmd.Parameters.AddWithValue("@year", year);
@@ -37,8 +37,18 @@ namespace ArtGallery.Artist.Artworks
             cmd.Parameters.AddWithValue("@stockQty", stock);
             cmd.Parameters.AddWithValue("@isVisible", isVisible);
             cmd.Parameters.AddWithValue("@artistId", Membership.GetUser().ProviderUserKey);
+            int id = (int)cmd.ExecuteScalar();
+            isCreated = id != 0;
 
-            isCreated = cmd.ExecuteNonQuery() > 0;
+            if (FileUpload.HasFile)
+            {
+                FileUpload.SaveAs(Server.MapPath("~/Storage/Artworks/" + id + System.IO.Path.GetExtension(FileUpload.FileName)));
+                cmd = new SqlCommand("UPDATE Artworks SET Image = @Image WHERE Id = @Id AND ArtistId = @ArtistId", conn);
+                cmd.Parameters.AddWithValue("@Image", id + System.IO.Path.GetExtension(FileUpload.FileName));
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.Parameters.AddWithValue("@artistId", Membership.GetUser().ProviderUserKey);
+                cmd.ExecuteNonQuery();
+            }
 
             if (isCreated)
             {
