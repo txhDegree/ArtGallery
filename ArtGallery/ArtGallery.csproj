@@ -113,7 +113,6 @@
     <Content Include="Customer\register.aspx" />
     <Content Include="Customer\Wishlists\List.aspx" />
     <Content Include="login.aspx" />
-    <Content Include="Artist\Profile\EditProfile.aspx" />
     <Content Include="Artist\register.aspx" />
     <Content Include="public\app.css" />
     <Content Include="public\app.js" />
@@ -1947,13 +1946,6 @@
     </Compile>
     <Compile Include="Artist\Navbar.master.designer.cs">
       <DependentUpon>Navbar.master</DependentUpon>
-    </Compile>
-    <Compile Include="Artist\Profile\EditProfile.aspx.cs">
-      <DependentUpon>EditProfile.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Artist\Profile\EditProfile.aspx.designer.cs">
-      <DependentUpon>EditProfile.aspx</DependentUpon>
     </Compile>
     <Compile Include="Artist\register.aspx.cs">
       <DependentUpon>register.aspx</DependentUpon>
