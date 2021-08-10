@@ -36,7 +36,7 @@
         </asp:Repeater>
 
         
-        <asp:SqlDataSource ID="ArtistArtworkSource" runat="server" ConnectionString="<%$ ConnectionStrings:ArtDBConnStr %>" SelectCommand="SELECT * FROM [Artworks] WHERE ([ArtistId] = @ArtistId)">
+        <asp:SqlDataSource ID="ArtistArtworkSource" runat="server" ConnectionString="<%$ ConnectionStrings:ArtDBConnStr %>" SelectCommand="SELECT * FROM [Artworks] WHERE ([ArtistId] = @ArtistId) ORDER BY Id DESC">
             <SelectParameters>
                 <asp:Parameter Name="ArtistId" Type="String"/>
             </SelectParameters>

@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-12"><h3>Payment Cancelled</h3></div>
             <div class="col-12">
-                <div class="alert alert-danger">Your payment is cancelled. <a href="/Cusotmer/Orders/List.aspx" class="btn btn-danger">Back To Order</a></div>
+                <div class="alert alert-danger">Your payment is cancelled. <a href="/Customer/Orders/List.aspx" class="btn btn-danger">Back To Order</a></div>
             </div>
             <div class="col-md-6 mx-auto"><img class="w-100" src="/public/img/cancel.svg" alt="Payment Cancel Img" /></div>
         </div>

@@ -65,9 +65,8 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Address:</label>
-                                <asp:RequiredFieldValidator CssClass="text-danger" runat="server" ID="reqAddress" ControlToValidate="AddressList" errormessage="Please select an address or create a new address!" />
-                                <asp:DropDownList CssClass="form-control" ID="AddressList" runat="server" DataSourceID="AddressSource" DataTextField="Label" DataValueField="Id" AppendDataBoundItems="true" OnSelectedIndexChanged="AddressList_SelectedIndexChanged" AutoPostBack="true" >
+                                <label>Address:</label> <span class="text-danger d-none" id="AddressError">Please select or create an address</span>
+                                <asp:DropDownList CssClass="form-control" ID="AddressList" runat="server" DataSourceID="AddressSource" DataTextField="Label" DataValueField="Id" AppendDataBoundItems="true" >
                                     <asp:ListItem Value="">-- Select An Address --</asp:ListItem>
                                 </asp:DropDownList>
                                 <asp:SqlDataSource ID="AddressSource" runat="server" ConnectionString="<%$ ConnectionStrings:ArtDBConnStr %>" SelectCommand="SELECT [Id], [Label] FROM [Addresses] WHERE [CustomerId] = @CustomerId">
@@ -80,12 +79,28 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <asp:LinkButton runat="server" ID="btnCreateOrder" PostBackUrl="/Customer/Orders/NewOrder.aspx" CssClass="btn btn-primary btn-block">Checkout</asp:LinkButton>
+                    <button id="checkoutbtn" class="btn btn-primary btn-block">Checkout</button>
                 </div>
             </div>
         </div>
     </div>
     <% } %>
 </asp:Content>
-<asp:Content ContentPlaceHolderID="VendorScript" runat="server">
+<asp:Content runat="server" ContentPlaceHolderID="VendorScript">
+    <script>
+        const addresses = document.querySelector('select#Content_Content_AddressList')
+        const addressError = document.querySelector('#AddressError');
+        document.querySelector("#checkoutbtn").addEventListener('click', (e) => {
+            e.preventDefault();
+            addressError.classList.remove('d-inline-block');
+            addressError.classList.add('d-none');
+            if (addresses.value) {
+                location = "/Customer/Orders/NewOrder.aspx?Id=" + addresses.value
+            }
+            else {
+                addressError.classList.add('d-inline-block');
+                addressError.classList.remove('d-none');
+            }
+        })
+    </script>
 </asp:Content>

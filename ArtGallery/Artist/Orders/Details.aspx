@@ -127,6 +127,7 @@
                                 <asp:LinkButton runat="server" ID="btnShipping" CssClass="btn btn-primary" OnClick="btnShipping_Click">Update to Shipping</asp:LinkButton>
                             </div>
                         </div>
+                        <asp:RequiredFieldValidator runat="server" ID="RequireTrackingNo" ControlToValidate="txtTrackingNo" ErrorMessage="Please enter a tracking number" CssClass="text-danger"></asp:RequiredFieldValidator>
                     <%  break;
                         case "shipping": %>
                         <div class="alert alert-warning">This order is still in shipping process. The amount will be transfer to your wallet once the order is marked complete by customer.</div>

@@ -1,0 +1,130 @@
+-- Drop And Truncate Tables
+DROP TABLE OrderPayments;
+DROP TABLE Payments;
+DROP TABLE OrderDetail;
+DROP TABLE Orders;
+DROP TABLE Shipments;
+DROP TABLE Wishlists;
+DROP TABLE Carts;
+DROP TABLE Artworks;
+DROP TABLE Addresses;
+TRUNCATE TABLE aspnet_UsersInRoles;
+TRUNCATE TABLE aspnet_Membership;
+DELETE FROM aspnet_Users;
+-- Create Address Table
+CREATE TABLE [dbo].[Addresses] (
+    [Id]              INT              IDENTITY (1, 1) NOT NULL,
+    [Label]           NCHAR (50)       NULL,
+    [ReceiverName]    NVARCHAR (50)    NULL,
+    [ReceiverContact] NCHAR (10)       NULL,
+    [Address]         NCHAR (64)       NULL,
+    [City]            NCHAR (10)       NULL,
+    [PostalCode]      NCHAR (5)        NULL,
+    [State]           NCHAR (3)        NULL,
+    [CustomerId]      UNIQUEIDENTIFIER NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    FOREIGN KEY ([CustomerId]) REFERENCES [dbo].[aspnet_Users] ([UserId])
+);
+
+-- Create Artwork Table
+CREATE TABLE [dbo].[Artworks] (
+    [Id]            INT              IDENTITY (1, 1) NOT NULL,
+    [Title]         NVARCHAR (50)    NULL,
+    [Description]   NVARCHAR (200)   NULL,
+    [Year]          DATE             NULL,
+    [Price]         MONEY            NULL,
+    [StockQuantity] INT              DEFAULT ((0)) NULL,
+    [isVisible]     TINYINT          DEFAULT ((1)) NOT NULL,
+    [Image]         NVARCHAR(50)    NULL,
+    [ArtistId]      UNIQUEIDENTIFIER NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    FOREIGN KEY ([ArtistId]) REFERENCES [dbo].[aspnet_Users] ([UserId])
+);
+
+-- Create Cart Table
+CREATE TABLE [dbo].[Carts] (
+    [CustomerId] UNIQUEIDENTIFIER NOT NULL,
+    [ArtworkId]  INT              NOT NULL,
+    [Quantity]   INT              NOT NULL,
+    [AddedAt]    DATETIME         NOT NULL,
+    CONSTRAINT [PK_Carts] PRIMARY KEY CLUSTERED ([CustomerId] ASC, [ArtworkId] ASC),
+    FOREIGN KEY ([CustomerId]) REFERENCES [dbo].[aspnet_Users] ([UserId]),
+    FOREIGN KEY ([ArtworkId]) REFERENCES [dbo].[Artworks] ([Id])
+);
+
+-- Create Wishlists Table
+CREATE TABLE [dbo].[Wishlists] (
+    [CustomerId] UNIQUEIDENTIFIER NOT NULL,
+    [ArtworkId]  INT              NOT NULL,
+    [AddedAt]    DATETIME         NOT NULL,
+    CONSTRAINT [PK_Wishlists] PRIMARY KEY CLUSTERED ([CustomerId] ASC, [ArtworkId] ASC),
+    FOREIGN KEY ([CustomerId]) REFERENCES [dbo].[aspnet_Users] ([UserId]),
+    FOREIGN KEY ([ArtworkId]) REFERENCES [dbo].[Artworks] ([Id])
+);
+
+-- Create Shipments Table
+CREATE TABLE [dbo].[Shipments] (
+    [Id]              INT           IDENTITY (1, 1) NOT NULL,
+    [ReceiverName]    NVARCHAR (50) NULL,
+    [ReceiverContact] NCHAR (10)    NULL,
+    [Address]         NCHAR (64)    NULL,
+    [City]            NCHAR (10)    NULL,
+    [PostalCode]      NCHAR (5)     NULL,
+    [State]           NCHAR (3)     NULL,
+    [TrackingNo]      NVARCHAR (50) NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+-- Create Orders Table
+CREATE TABLE [dbo].[Orders] (
+    [Id]          INT              IDENTITY (1, 1) NOT NULL,
+    [Date]        DATETIME         NULL,
+    [Status]      NCHAR (20)       NULL,
+    [TotalAmount] MONEY            NULL,
+    [ShippingFee] MONEY            NULL,
+    [AmountToPay] MONEY            NULL,
+    [isPaid]      BIT              NULL,
+    [PaidAt]      DATETIME         NULL,
+    [PreparingAt] DATETIME         NULL,
+    [ShippingAt]  DATETIME         NULL,
+    [CompleteAt]  DATETIME         NULL,
+    [CancelledAt] DATETIME         NULL,
+    [CustomerId]  UNIQUEIDENTIFIER NULL,
+    [ArtistId]    UNIQUEIDENTIFIER NULL,
+    [ShipmentId]  INT              NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    FOREIGN KEY ([CustomerId]) REFERENCES [dbo].[aspnet_Users] ([UserId]),
+    FOREIGN KEY ([ArtistId]) REFERENCES [dbo].[aspnet_Users] ([UserId]),
+    FOREIGN KEY ([ShipmentId]) REFERENCES [dbo].[Shipments] ([Id])
+);
+
+-- Create OrderDetail Table
+CREATE TABLE [dbo].[OrderDetail] (
+    [OrderId]      INT           NOT NULL,
+    [ArtworkId]    INT           NOT NULL,
+    [ArtworkTitle] NVARCHAR (50) NULL,
+    [UnitPrice]    MONEY         NULL,
+    [Quantity]     INT           NULL,
+    CONSTRAINT [PK_OrderDetail] PRIMARY KEY CLUSTERED ([OrderId] ASC, [ArtworkId] ASC),
+    FOREIGN KEY ([OrderId]) REFERENCES [dbo].[Orders] ([Id]),
+    FOREIGN KEY ([ArtworkId]) REFERENCES [dbo].[Artworks] ([Id])
+);
+
+-- Create Payments Table
+CREATE TABLE [dbo].[Payments] (
+    [Id]        INT        IDENTITY (1, 1) NOT NULL,
+    [Status]    NCHAR (20) NULL,
+    [Amount]    MONEY      NULL,
+    [CreatedAt] DATETIME   NULL,
+    [UpdatedAt] DATETIME   NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+-- Create OrderPayments Table
+CREATE TABLE [dbo].[OrderPayments] (
+    [PaymentId] INT NOT NULL,
+    [OrderId]   INT NOT NULL,
+    CONSTRAINT [PK_OrderPayments] PRIMARY KEY CLUSTERED ([PaymentId] ASC, [OrderId] ASC),
+    FOREIGN KEY ([PaymentId]) REFERENCES [dbo].[Payments] ([Id]),
+    FOREIGN KEY ([OrderId]) REFERENCES [dbo].[Orders] ([Id])
+);

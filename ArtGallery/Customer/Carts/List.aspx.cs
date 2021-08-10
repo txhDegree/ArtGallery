@@ -60,6 +60,7 @@ namespace ArtGallery.Customer.Carts
             cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
             isDeleted = cmd.ExecuteNonQuery() > 0;
             conn.Close();
+            Repeater1.DataBind();
         }
 
         protected void Repeater1_PreRender(object sender, EventArgs e)
@@ -69,11 +70,6 @@ namespace ArtGallery.Customer.Carts
                 NoRecords.Visible = true;
                 Repeater1.Visible = false;
             }
-        }
-
-        protected void AddressList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            btnCreateOrder.PostBackUrl = "/Customer/Orders/NewOrder.aspx?Id=" + AddressList.SelectedValue;
         }
     }
 }

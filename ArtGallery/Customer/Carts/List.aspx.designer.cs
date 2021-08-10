@@ -60,15 +60,6 @@ namespace ArtGallery.Customer.Carts
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblTotalAmount;
 
         /// <summary>
-        /// reqAddress control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator reqAddress;
-
-        /// <summary>
         /// AddressList control.
         /// </summary>
         /// <remarks>
@@ -85,14 +76,5 @@ namespace ArtGallery.Customer.Carts
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource AddressSource;
-
-        /// <summary>
-        /// btnCreateOrder control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnCreateOrder;
     }
 }
