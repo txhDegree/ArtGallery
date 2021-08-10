@@ -12,6 +12,11 @@
 <asp:Content ID="Content" ContentPlaceHolderID="Content" runat="server">
     <h1 class="h3 mb-4 text-gray-800">My Addresses</h1>
     <div class="row d-flex">
+        <% if (isDeleted) { %>
+        <div class="col-12">
+            <div class="alert alert-success">Your address is deleted successfully.</div>
+        </div>
+        <% } %>
         <div class="col-12 text-center" runat="server" visible="false" id="NoRecords">
             <div class="row">
                 <div class="col-12"><h3>Oops... No Records Are Available</h3></div>
@@ -26,7 +31,10 @@
                             <h5 class="card-title"><a href='/Customer/Addresses/Edit.aspx?Id=<%# Eval("Id") %>'><%# Eval("Label") %></a></h5>
                             <p class="card-text text-overflow-hide"><%# Eval("Address") %></p>
                             <p class="card-text"><span class="badge badge-info"><%# Eval("PostalCode") %></span> <span class="badge badge-info"><%# Eval("CityName") %></span> <span class="badge badge-info"><%# Eval("StateName") %></span></p>
-                            <a href='/Customer/Addresses/Edit.aspx?Id=<%# Eval("Id") %>' class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                            <div class="btn-group">
+                                <a href='/Customer/Addresses/Edit.aspx?Id=<%# Eval("Id") %>' class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                                <asp:LinkButton runat="server" CommandName="RemoveAddress" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-danger" data-toggle="tooltip" title="Delete Address"><i class="fa fa-fw fa-trash"></i></asp:LinkButton>
+                            </div>
                         </div>
                     </div>
                 </div>
