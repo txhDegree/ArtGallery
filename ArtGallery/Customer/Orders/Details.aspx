@@ -95,7 +95,7 @@
                                     <asp:Repeater ID="OrderDetailsRepeater" runat="server" DataSourceID="OrderDetailsSource">
                                         <ItemTemplate>
                                             <tr>
-                                                <td><a href='/Customer/Artworks/Details.aspx?Id=<%# Eval("ArtworkId") %>'><%# Eval("ArtworkTitle") %></a></td>
+                                                <td><a href='/Artworks/Details.aspx?Id=<%# Eval("ArtworkId") %>'><%# Eval("ArtworkTitle") %></a></td>
                                                 <td><p class="mb-0"><span class="d-inline-block w-25">RM</span><span class="d-inline-block w-75 text-right"><%# Convert.ToDecimal(Eval("UnitPrice")).ToString("F") %></span></p></td>
                                                 <td><%# Eval("Quantity") %></td>
                                                 <td><p class="mb-0"><span class="d-inline-block w-25">RM </span><span class="d-inline-block w-75 text-right"><%# (Convert.ToDouble(Eval("UnitPrice"))*Convert.ToInt32(Eval("Quantity"))).ToString("F") %></span></p></td>

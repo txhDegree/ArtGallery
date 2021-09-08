@@ -22,7 +22,7 @@ namespace ArtGallery.Artist
         protected void Logout_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
-            FormsAuthentication.RedirectToLoginPage();
+            Response.Redirect("/index.aspx");
         }
     }
 }

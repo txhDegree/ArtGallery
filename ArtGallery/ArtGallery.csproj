@@ -87,7 +87,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="404.aspx" />
+    <Content Include="Error\404.aspx" />
     <Content Include="App_Data\ArtDB.mdf" />
     <Content Include="App_Data\ArtDB_log.ldf">
       <DependentUpon>ArtDB.mdf</DependentUpon>
@@ -100,8 +100,8 @@
     <Content Include="Customer\Addresses\Edit.aspx" />
     <Content Include="Customer\Addresses\Create.aspx" />
     <Content Include="Customer\Addresses\List.aspx" />
-    <Content Include="Customer\Artworks\Details.aspx" />
-    <Content Include="Customer\Artworks\List.aspx" />
+    <Content Include="Artworks\Details.aspx" />
+    <Content Include="Artworks\List.aspx" />
     <Content Include="Customer\Carts\List.aspx" />
     <Content Include="Customer\Orders\OutOfStock.aspx" />
     <Content Include="Customer\Orders\Details.aspx" />
@@ -112,6 +112,8 @@
     <Content Include="Customer\Payments\PaymentSuccess.aspx" />
     <Content Include="Customer\register.aspx" />
     <Content Include="Customer\Wishlists\List.aspx" />
+    <Content Include="index.aspx" />
+    <Content Include="public\index.css" />
     <Content Include="login.aspx" />
     <Content Include="Artist\register.aspx" />
     <Content Include="public\app.css" />
@@ -1772,11 +1774,11 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="404.aspx.cs">
+    <Compile Include="Error\404.aspx.cs">
       <DependentUpon>404.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="404.aspx.designer.cs">
+    <Compile Include="Error\404.aspx.designer.cs">
       <DependentUpon>404.aspx</DependentUpon>
     </Compile>
     <Compile Include="Artist\Artworks\Create.aspx.cs">
@@ -1835,18 +1837,18 @@
     <Compile Include="Customer\Addresses\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Customer\Artworks\Details.aspx.cs">
+    <Compile Include="Artworks\Details.aspx.cs">
       <DependentUpon>Details.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Customer\Artworks\Details.aspx.designer.cs">
+    <Compile Include="Artworks\Details.aspx.designer.cs">
       <DependentUpon>Details.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Customer\Artworks\List.aspx.cs">
+    <Compile Include="Artworks\List.aspx.cs">
       <DependentUpon>List.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Customer\Artworks\List.aspx.designer.cs">
+    <Compile Include="Artworks\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
     </Compile>
     <Compile Include="Customer\Carts\List.aspx.cs">
@@ -1925,6 +1927,13 @@
     </Compile>
     <Compile Include="Customer\Wishlists\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="index.aspx.designer.cs">
+      <DependentUpon>index.aspx</DependentUpon>
     </Compile>
     <Compile Include="main.Master.cs">
       <DependentUpon>main.Master</DependentUpon>
