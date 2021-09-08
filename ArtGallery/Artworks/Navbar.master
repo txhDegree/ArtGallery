@@ -1,0 +1,59 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/main.Master" AutoEventWireup="true" CodeBehind="Navbar.master.cs" Inherits="ArtGallery.Navbar" %>
+<asp:Content ContentPlaceHolderID="MasterStyle" runat="server">
+        <link href="/public/index.css" rel="stylesheet" />
+    <asp:ContentPlaceHolder ID="Style" runat="server"></asp:ContentPlaceHolder>
+</asp:Content>
+<asp:Content ContentPlaceHolderID="MasterTitle" runat="server">
+    <asp:ContentPlaceHolder ID="Title" runat="server"></asp:ContentPlaceHolder>
+</asp:Content>
+<asp:Content ID="Content" ContentPlaceHolderID="Content" runat="server">
+    <nav class="navbar navbar-expand-lg bg-gradient-dark fixed-top py-2" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="/index.aspx"><img src="/public/img/logo.png" alt="Logo" /></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars ms-1"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/Artworks/List.aspx">Artworks Gallery</a></li>
+                </ul>
+            </div>
+            <% if(isLoggedIn) { %>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/Customer/Dashboard.aspx">Customer Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Customer/Carts/List.aspx">My Cart</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Customer/Orders/List.aspx">My Order</a></li>
+                </ul>
+            </div>
+            <div class="ml-auto">
+                <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                    <li class="nav-item"><asp:LinkButton ID="logoutBtn" CssClass="nav-link" runat="server" OnClick="logoutBtn_Click">Logout</asp:LinkButton></li>
+                </ul>
+            </div>
+            <% } else { %>
+            <div class="ml-auto">
+                <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/login.aspx">Login</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Sign Up
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton2">
+                            <a class="dropdown-item" href="/Customer/register.aspx">Customer</a>
+                            <a class="dropdown-item" href="/Artist/register.aspx">Artist</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <% } %>
+        </div>
+    </nav>
+    <div class="container mt-5 pt-5">
+        <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
+    </div>
+</asp:Content>
+<asp:Content ContentPlaceHolderID="MasterScript" runat="server">
+    <asp:ContentPlaceHolder ID="Script" runat="server"></asp:ContentPlaceHolder>
+</asp:Content>

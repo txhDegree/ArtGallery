@@ -1,5 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Customer/Navbar.master" AutoEventWireup="true" CodeBehind="List.aspx.cs" Inherits="ArtGallery.Customer.Artworks.List" %>
-<asp:Content ID="style" ContentPlaceHolderID="VendorStyle" runat="server">
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Artworks/Navbar.master" AutoEventWireup="true" CodeBehind="List.aspx.cs" Inherits="ArtGallery.Customer.Artworks.List" %>
+<asp:Content ID="style" ContentPlaceHolderID="Style" runat="server">
     <style>
         .text-overflow-hide {
             white-space: nowrap;
@@ -8,8 +8,9 @@
         }
     </style>
 </asp:Content>
-<asp:Content ID="title" ContentPlaceHolderID="title" runat="server">Art Galleries - Customer</asp:Content>
-<asp:Content ID="Content" ContentPlaceHolderID="Content" runat="server">
+<asp:Content ID="title" ContentPlaceHolderID="Title" runat="server">Art Galleries - Customer</asp:Content>
+<asp:Content ID="Content" ContentPlaceHolderID="MainContent" runat="server">
+    <h1 class="h3 mb-4 text-gray-800">Arts Galleries</h1>
     <% if (isAddedToCart) { %>
         <div class="alert alert-success">Item is added to your cart successfully!</div>
     <% } else if (isAddedToWishlist) { %>
@@ -21,7 +22,6 @@
     <% } else if (unableToRemovedFromWishlist) { %>
         <div class="alert alert-warning">Unable to remove, the item is not in your wishlist!</div>
     <% }%>
-    <h1 class="h3 mb-4 text-gray-800">Arts Galleries</h1>
     <div class="row d-flex">
         <div class="col-12 text-center" runat="server" visible="false" id="NoRecords">
             <div class="row">
@@ -35,13 +35,13 @@
                     <div class="card">
                         <img class="card-img-top" src='<%# Convert.IsDBNull(Eval("Image")) ? "/public/img/image.svg" : "/Storage/Artworks/" + Eval("Image").ToString() %>'>
                         <div class="card-body">
-                            <h5 class="card-title"><a href='/Customer/Artworks/Details.aspx?Id=<%# Eval("Id") %>'><%# Eval("Title") %></a></h5>
+                            <h5 class="card-title"><a href='/Artworks/Details.aspx?Id=<%# Eval("Id") %>'><%# Eval("Title") %></a></h5>
                             <p class="card-text text-overflow-hide"><%# Eval("Description") %></p>
                             <p class="card-text"><span class="text-success font-weight-bold">RM <%# ((Decimal)Eval("Price")).ToString("F") %></span></p>
                             <p class="card-text"><span class="badge badge-info"><%# Eval("StockQuantity") %> Stock Left</span></p>
                         </div>
                         <div class="card-footer">
-                            <a href='/Customer/Artworks/Details.aspx?Id=<%# Eval("Id") %>' class="btn btn-primary" data-toggle="tooltip" title="More Details"><i class="fa fa-eye"></i></a>
+                            <a href='/Artworks/Details.aspx?Id=<%# Eval("Id") %>' class="btn btn-primary" data-toggle="tooltip" title="More Details"><i class="fa fa-eye"></i></a>
                             <asp:LinkButton Visible='<%# Eval("IsAdded").ToString() == "1" %>' ID="btnRemoveWishlist" runat="server" CommandName="RemoveFromWishlist" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-danger" data-toggle="tooltip" title="Remove From Wishlist"><i class="far fa-fw fa-bookmark"></i></asp:LinkButton>
                             <asp:LinkButton Visible='<%# Eval("IsAdded").ToString() == "0" %>' ID="btnWishlist" runat="server" CommandName="AddToWishlist" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-warning" data-toggle="tooltip" title="Add To Wishlist"><i class="far fa-fw fa-bookmark"></i></asp:LinkButton>
                             <asp:LinkButton ID="btnCart" runat="server" CommandName="AddToCart" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-success" data-toggle="tooltip" title="Add To Cart" ><i class="fa fa-fw fa-cart-plus"></i></asp:LinkButton>

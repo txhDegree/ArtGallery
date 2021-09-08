@@ -47,11 +47,15 @@ namespace ArtGallery.Customer.Artworks
         {
             MembershipUser user = Membership.GetUser();
             if (user == null)
-                Response.Redirect("/login.aspx?ReturnUrl=%2fArtworks%2fDetails.aspx%3fId%3d"+ Request.Params["Id"] + "&Id="+ Request.Params["Id"]);
-            if (Roles.GetRolesForUser(user.UserName)[0].ToString() != "Customer" )
-                Response.Redirect("/login.aspx?ReturnUrl=%2fArtworks%2fDetails.aspx%3fId%3d" + Request.Params["Id"] + "&Id=" + Request.Params["Id"]);
-            if (!rangeValidator.IsValid)
+            {
+                FormsAuthentication.RedirectToLoginPage();
                 return;
+            }
+            if (Roles.GetRolesForUser(user.UserName)[0] != "Customer")
+            {
+                FormsAuthentication.RedirectToLoginPage();
+                return;
+            }
             SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
             conn.Open();
             SqlCommand cmd;

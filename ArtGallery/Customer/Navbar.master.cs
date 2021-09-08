@@ -20,8 +20,9 @@ namespace ArtGallery.Customer
 
         protected void Logout_Click(object sender, EventArgs e)
         {
+            Session.Abandon();
             FormsAuthentication.SignOut();
-            FormsAuthentication.RedirectToLoginPage();
+            Response.Redirect("/index.aspx");
         }
     }
 }

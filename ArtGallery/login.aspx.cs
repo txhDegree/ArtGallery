@@ -19,10 +19,16 @@ namespace ArtGallery.Artist
         {
             switch (Roles.GetRolesForUser(Login1.UserName)[0]) {
                 case "Customer":
-                    Response.Redirect("/Customer/Artworks/List.aspx");
+                    if (Request.QueryString["ReturnUrl"] != null)
+                        Response.Redirect(Request.QueryString["ReturnUrl"]);
+                    else
+                        Response.Redirect("/Customer/Carts/List.aspx");
                     break;
                 case "Artist":
-                    Response.Redirect("/Artist/Artworks/List.aspx");
+                    if (Request.QueryString["ReturnUrl"] != null)
+                        Response.Redirect(Request.QueryString["ReturnUrl"]);
+                    else
+                        Response.Redirect("/Artist/Artworks/List.aspx");
                     break;
             }
         }

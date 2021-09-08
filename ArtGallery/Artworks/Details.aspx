@@ -1,6 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/main.master" AutoEventWireup="true" CodeBehind="Details.aspx.cs" Inherits="ArtGallery.Customer.Artworks.Details" %>
-<asp:Content ID="title" ContentPlaceHolderID="MasterTitle" runat="server" >Artwork Details</asp:Content>
-<asp:Content ID="Content" ContentPlaceHolderID="Content" runat="server">
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Artworks/Navbar.master" AutoEventWireup="true" CodeBehind="Details.aspx.cs" Inherits="ArtGallery.Customer.Artworks.Details" %>
+<asp:Content ID="title" ContentPlaceHolderID="Title" runat="server" >Artwork Details</asp:Content>
+<asp:Content ID="Content" ContentPlaceHolderID="MainContent" runat="server">
     <div class="card m-2">
         <div class="card-body">
             <div class="row">
@@ -41,7 +41,7 @@
         </div>
     </div>
 </asp:Content>
-<asp:Content ID="script" ContentPlaceHolderID="MasterScript" runat="server">
+<asp:Content ID="script" ContentPlaceHolderID="Script" runat="server">
     <script defer="defer">
         const qty = document.querySelector("#Content_Content_txtQty")
         document.querySelector("[data-minus]").addEventListener('click', (e) => {
