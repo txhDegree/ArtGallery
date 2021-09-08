@@ -33,10 +33,12 @@ namespace ArtGallery.Customer.Artworks
             MembershipUser user = Membership.GetUser();
             if(user == null) {
                 FormsAuthentication.RedirectToLoginPage();
+                return;
             }
             if (Roles.GetRolesForUser(user.UserName)[0] != "Customer")
             {
                 FormsAuthentication.RedirectToLoginPage();
+                return;
             }
             SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
             conn.Open();
