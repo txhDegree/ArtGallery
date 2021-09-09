@@ -13,10 +13,14 @@ namespace ArtGallery.Customer.Orders
     public partial class List : System.Web.UI.Page
     {
         protected Boolean paymentRequired = true;
+        protected int page = 1;
         protected void Page_Init(object sender, EventArgs e)
         {
             ArtworkSource.SelectParameters["CustomerId"].DefaultValue = Membership.GetUser().ProviderUserKey.ToString();
+            PagingSource.SelectParameters["CustomerId"].DefaultValue = ArtworkSource.SelectParameters["CustomerId"].DefaultValue;
+            Pagination.initialize(ArtworkSource, PagingSource, 12);
         }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);

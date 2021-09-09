@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Customer/Navbar.master" AutoEventWireup="true" CodeBehind="List.aspx.cs" Inherits="ArtGallery.Customer.Carts.List" %>
+<%@ Register Src="~/Controls/Pagination.ascx" TagPrefix="UC" TagName="Pagination" %>
 <asp:Content ID="style" ContentPlaceHolderID="VendorStyle" runat="server">
     <style>
         .text-overflow-hide {
@@ -14,36 +15,48 @@
     <% if (isDeleted) { %>
     <div class="alert alert-success">The artwork is deleted successfully.</div>
     <% } %>
-    <div class="row d-flex">
-        <div class="col-12 text-center" runat="server" visible="false" id="NoRecords">
-            <div class="row">
-                <div class="col-12"><h3>Oops... No Records Are Available</h3></div>
-                <div class="col-md-6 mx-auto"><img class="w-100" src="/public/img/searching.svg" alt="No Record Found Img" /></div>
+    <div class="container">
+        <div class="row d-flex">
+            <div class="col-12 text-center" runat="server" visible="false" id="NoRecords">
+                <div class="row">
+                    <div class="col-12"><h3>Oops... No Records Are Available</h3></div>
+                    <div class="col-md-6 mx-auto"><img class="w-100" src="/public/img/searching.svg" alt="No Record Found Img" /></div>
+                </div>
             </div>
-        </div>
-        <asp:Repeater ID="Repeater1" runat="server" DataSourceID="ArtworkSource" OnItemCommand="Repeater1_ItemCommand" OnPreRender="Repeater1_PreRender">
-            <ItemTemplate>
-                <div class="col-xl-3 col-lg-4 col-md-6 p-2">
-                    <div class="card">
-                        <img class="card-img-top" src='<%# Convert.IsDBNull(Eval("Image")) ? "/public/img/image.svg" : "/Storage/Artworks/" + Eval("Image").ToString() %>'>
-                        <div class="card-body">
-                            <h5 class="card-title"><a href='/Artworks/Details.aspx?Id=<%# Eval("Id") %>'><%# Eval("Title") %></a></h5>
-                            <p class="card-text"><span class="badge badge-primary"><%# Eval("UserName") %></span> <span class="badge badge-info"><%# Eval("StockQuantity") %> Stock Left</span></p>
-                            <p class="card-text">RM <%# ((Decimal)Eval("Price")).ToString("F") %> × <%# Eval("Quantity") %></p>
-                            <p class="card-text">Subtotal: <span class="text-success font-weight-bold">RM <%# ((Decimal)Eval("Subtotal")).ToString("F") %></span></p>
-                        </div>
-                        <div class="card-footer">
-                            <asp:LinkButton runat="server" CommandName="RemoveFromCart" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-danger" data-toggle="tooltip" title="Remove From Cart"><i class="fa fa-fw fa-trash-alt"></i></asp:LinkButton>
+            <asp:Repeater ID="Repeater1" runat="server" DataSourceID="PagingSource" OnItemCommand="Repeater1_ItemCommand" OnPreRender="Repeater1_PreRender">
+                <ItemTemplate>
+                    <div class="col-xl-3 col-lg-4 col-md-6 p-2">
+                        <div class="card">
+                            <img class="card-img-top" src='<%# Convert.IsDBNull(Eval("Image")) ? "/public/img/image.svg" : "/Storage/Artworks/" + Eval("Image").ToString() %>'>
+                            <div class="card-body">
+                                <h5 class="card-title"><a href='/Artworks/Details.aspx?Id=<%# Eval("Id") %>'><%# Eval("Title") %></a></h5>
+                                <p class="card-text"><span class="badge badge-primary"><%# Eval("UserName") %></span> <span class="badge badge-info"><%# Eval("StockQuantity") %> Stock Left</span></p>
+                                <p class="card-text">RM <%# ((Decimal)Eval("Price")).ToString("F") %> × <%# Eval("Quantity") %></p>
+                                <p class="card-text">Subtotal: <span class="text-success font-weight-bold">RM <%# ((Decimal)Eval("Subtotal")).ToString("F") %></span></p>
+                            </div>
+                            <div class="card-footer">
+                                <asp:LinkButton runat="server" CommandName="RemoveFromCart" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-danger" data-toggle="tooltip" title="Remove From Cart"><i class="fa fa-fw fa-trash-alt"></i></asp:LinkButton>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </ItemTemplate>
-        </asp:Repeater>
-        <asp:SqlDataSource ID="ArtworkSource" runat="server" ConnectionString="<%$ ConnectionStrings:ArtDBConnStr %>" SelectCommand="SELECT *, [A].[Price] * [C].[Quantity] as Subtotal FROM [Artworks] A RIGHT JOIN [Carts] C ON [A].[Id] = [C].[ArtworkId], [aspnet_Users] U WHERE ([A].[isVisible] = 1) AND CustomerId = @CustomerId AND [A].[ArtistId] = [U].[UserId] ORDER BY AddedAt DESC;">
-            <SelectParameters>
-                <asp:Parameter Name="CustomerId" Type="String"/>
-            </SelectParameters>
-        </asp:SqlDataSource>
+                </ItemTemplate>
+            </asp:Repeater>
+            <asp:SqlDataSource ID="ArtworkSource" runat="server" ConnectionString="<%$ ConnectionStrings:ArtDBConnStr %>" SelectCommand="SELECT *, [A].[Price] * [C].[Quantity] as Subtotal FROM [Artworks] A RIGHT JOIN [Carts] C ON [A].[Id] = [C].[ArtworkId], [aspnet_Users] U WHERE ([A].[isVisible] = 1) AND CustomerId = @CustomerId AND [A].[ArtistId] = [U].[UserId] ORDER BY AddedAt DESC;">
+                <SelectParameters>
+                    <asp:Parameter Name="CustomerId" Type="String"/>
+                </SelectParameters>
+            </asp:SqlDataSource>
+            <asp:SqlDataSource ID="PagingSource" runat="server" ConnectionString="<%$ ConnectionStrings:ArtDBConnStr %>" SelectCommand="SELECT *, [A].[Price] * [C].[Quantity] as Subtotal FROM [Artworks] A RIGHT JOIN [Carts] C ON [A].[Id] = [C].[ArtworkId], [aspnet_Users] U WHERE ([A].[isVisible] = 1) AND CustomerId = @CustomerId AND [A].[ArtistId] = [U].[UserId] ORDER BY AddedAt DESC OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;">
+                <SelectParameters>
+                    <asp:Parameter Name="Skip" Type="Int32" DefaultValue="0"/>
+                    <asp:Parameter Name="Take" Type="Int32" DefaultValue="12"/>
+                    <asp:Parameter Name="CustomerId" Type="String"/>
+                </SelectParameters>
+            </asp:SqlDataSource>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center align-items-center">
+        <UC:Pagination runat="server" ID="Pagination" StartingPage="0" />
     </div>
     <% if(checkoutAvailable) { %>
     <div class="row mt-3">

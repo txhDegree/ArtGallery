@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Customer/Navbar.master" AutoEventWireup="true" CodeBehind="List.aspx.cs" Inherits="ArtGallery.Customer.Addresses.List" %>
+<%@ Register Src="~/Controls/Pagination.ascx" TagPrefix="UC" TagName="Pagination" %>
 <asp:Content ID="style" ContentPlaceHolderID="VendorStyle" runat="server">
     <style>
         .text-overflow-hide {
@@ -23,7 +24,7 @@
                 <div class="col-md-6 mx-auto"><img class="w-100" src="/public/img/searching.svg" alt="No Record Found Img" /></div>
             </div>
         </div>
-        <asp:Repeater ID="Repeater1" runat="server" DataSourceID="ArtworkSource" OnItemCommand="Repeater1_ItemCommand" OnPreRender="Repeater1_PreRender" >
+        <asp:Repeater ID="Repeater1" runat="server" DataSourceID="PagingSource" OnItemCommand="Repeater1_ItemCommand" OnPreRender="Repeater1_PreRender" >
             <ItemTemplate>
                 <div class="col-xl-3 col-lg-4 col-md-6 p-2">
                     <div class="card">
@@ -40,11 +41,20 @@
                 </div>
             </ItemTemplate>
         </asp:Repeater>
-        <asp:SqlDataSource ID="ArtworkSource" runat="server" ConnectionString="<%$ ConnectionStrings:ArtDBConnStr %>" SelectCommand="SELECT * FROM Addresses A LEFT JOIN States S ON A.State = S.StateId LEFT JOIN Cities C ON C.CityId = A.City WHERE A.CustomerId = @CustomerId;">
+        <asp:SqlDataSource ID="ArtworkSource" runat="server" ConnectionString="<%$ ConnectionStrings:ArtDBConnStr %>" SelectCommand="SELECT * FROM Addresses A LEFT JOIN States S ON A.State = S.StateId LEFT JOIN Cities C ON C.CityId = A.City WHERE A.CustomerId = @CustomerId  ORDER BY Id ASC;">
             <SelectParameters>
                 <asp:Parameter Name="CustomerId" Type="String"/>
             </SelectParameters>
         </asp:SqlDataSource>
-
+        <asp:SqlDataSource ID="PagingSource" runat="server" ConnectionString="<%$ ConnectionStrings:ArtDBConnStr %>" SelectCommand="SELECT * FROM Addresses A LEFT JOIN States S ON A.State = S.StateId LEFT JOIN Cities C ON C.CityId = A.City WHERE (A.CustomerId = @CustomerId) ORDER BY Id ASC OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;">
+            <SelectParameters>
+                <asp:Parameter Name="Skip" Type="Int32" DefaultValue="0"/>
+                <asp:Parameter Name="Take" Type="Int32" DefaultValue="12"/>
+                <asp:Parameter Name="CustomerId" Type="String"/>
+            </SelectParameters>
+        </asp:SqlDataSource>
+    </div>
+    <div class="d-flex justify-content-center align-items-center">
+        <UC:Pagination runat="server" ID="Pagination" StartingPage="0" />
     </div>
 </asp:Content>

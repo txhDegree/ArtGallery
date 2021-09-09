@@ -14,9 +14,12 @@ namespace ArtGallery.Customer.Addresses
     {
 
         protected Boolean isDeleted = false;
+        protected int page = 1;
         protected void Page_Init(object sender, EventArgs e)
         {
             ArtworkSource.SelectParameters["CustomerId"].DefaultValue = Membership.GetUser().ProviderUserKey.ToString();
+            PagingSource.SelectParameters["CustomerId"].DefaultValue = ArtworkSource.SelectParameters["CustomerId"].DefaultValue;
+            Pagination.initialize(ArtworkSource, PagingSource, 12);
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -42,9 +45,11 @@ namespace ArtGallery.Customer.Addresses
 
         protected void Repeater1_PreRender(object sender, EventArgs e)
         {
-            if (Repeater1.Items.Count < 1) {
+            if (Repeater1.Items.Count < 1)
+            {
                 NoRecords.Visible = true;
                 Repeater1.Visible = false;
+                Pagination.Visible = false;
             }
         }
     }

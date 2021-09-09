@@ -18,10 +18,14 @@ namespace ArtGallery.Customer.Artworks
         protected Boolean unableToRemovedFromWishlist = false;
         protected Boolean isAddedToWishlist = false;
         protected Boolean isInWishlist = false;
+        protected int page = 1;
         protected void Page_Init(object sender, EventArgs e)
         {
             MembershipUser user = Membership.GetUser();
             ArtworkSource.SelectParameters["CustomerId"].DefaultValue = user != null ? user.ProviderUserKey.ToString() : new Guid().ToString();
+            PagingSource.SelectParameters["CustomerId"].DefaultValue = ArtworkSource.SelectParameters["CustomerId"].DefaultValue;
+
+            Pagination.initialize(ArtworkSource, PagingSource, 12);
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -104,9 +108,11 @@ namespace ArtGallery.Customer.Artworks
 
         protected void Repeater1_PreRender(object sender, EventArgs e)
         {
-            if (Repeater1.Items.Count < 1) {
+            if (Repeater1.Items.Count < 1)
+            {
                 NoRecords.Visible = true;
                 Repeater1.Visible = false;
+                Pagination.Visible = false;
             }
         }
     }

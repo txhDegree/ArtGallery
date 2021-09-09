@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Customer/Navbar.master" AutoEventWireup="true" CodeBehind="List.aspx.cs" Inherits="ArtGallery.Customer.Orders.List" %>
+<%@ Register Src="~/Controls/Pagination.ascx" TagPrefix="UC" TagName="Pagination" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="VendorStyle" runat="server">
     <style>
         .badge-pending{
@@ -55,7 +56,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <asp:Repeater ID="Repeater1" runat="server" DataSourceID="ArtworkSource">
+                            <tr runat="server" visible="false" id="NoRecords">
+                                <td colspan="7">
+                                    <div class="col-12 text-center">
+                                        <div class="row">
+                                            <div class="col-12"><h3>Oops... No Records Are Available</h3></div>
+                                            <div class="col-md-6 mx-auto"><img class="w-100" src="/public/img/searching.svg" alt="No Record Found Img" /></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <asp:Repeater ID="Repeater1" runat="server" DataSourceID="PagingSource">
                                 <ItemTemplate>
                                     <tr>
                                         <td>
@@ -75,11 +86,22 @@
                                     <asp:ControlParameter ControlID="OrderStatusList" Name="Status" PropertyName="SelectedValue" Type="String" />
                                 </SelectParameters>
                             </asp:SqlDataSource>
+                            <asp:SqlDataSource ID="PagingSource" runat="server" ConnectionString="<%$ ConnectionStrings:ArtDBConnStr %>" SelectCommand="SELECT * FROM [Orders] WHERE (([CustomerId] = @CustomerId) AND ([Status] LIKE '%' + @Status + '%')) ORDER BY Date DESC OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY">
+                                <SelectParameters>
+                                    <asp:Parameter Name="Skip" Type="Int32" DefaultValue="0"/>
+                                    <asp:Parameter Name="Take" Type="Int32" DefaultValue="12"/>
+                                    <asp:Parameter Name="CustomerId" Type="String"/>
+                                    <asp:ControlParameter ControlID="OrderStatusList" Name="Status" PropertyName="SelectedValue" Type="String" />
+                                </SelectParameters>
+                            </asp:SqlDataSource>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="d-flex justify-content-center align-items-center">
+        <UC:Pagination runat="server" ID="Pagination" StartingPage="0" />
     </div>
     <% if(paymentRequired) { %>
     <div class="row mt-3">

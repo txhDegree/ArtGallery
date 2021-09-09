@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Artworks/Navbar.master" AutoEventWireup="true" CodeBehind="List.aspx.cs" Inherits="ArtGallery.Customer.Artworks.List" %>
+<%@ Register Src="~/Controls/Pagination.ascx" TagPrefix="UC" TagName="Pagination" %>
 <asp:Content ID="style" ContentPlaceHolderID="Style" runat="server">
     <style>
         .text-overflow-hide {
@@ -29,7 +30,7 @@
                 <div class="col-md-6 mx-auto"><img class="w-100" src="/public/img/searching.svg" alt="No Record Found Img" /></div>
             </div>
         </div>
-        <asp:Repeater ID="Repeater1" runat="server" DataSourceID="ArtworkSource" OnItemCommand="Repeater1_ItemCommand" OnPreRender="Repeater1_PreRender" >
+        <asp:Repeater ID="Repeater1" runat="server" DataSourceID="PagingSource" OnItemCommand="Repeater1_ItemCommand" OnPreRender="Repeater1_PreRender" >
             <ItemTemplate>
                 <div class="col-xl-3 col-lg-4 col-md-6 p-2">
                     <div class="card">
@@ -57,6 +58,16 @@
                 <asp:Parameter Name="CustomerId" Type="String"/>
             </SelectParameters>
         </asp:SqlDataSource>
+        <asp:SqlDataSource ID="PagingSource" runat="server" ConnectionString="<%$ ConnectionStrings:ArtDBConnStr %>" SelectCommand="SELECT *, CASE WHEN [W].[CustomerId] IS NULL THEN 0 ELSE 1 END AS IsAdded FROM [Artworks] A LEFT JOIN (SELECT * FROM [Wishlists] WHERE [CustomerId] = @CustomerId) W ON [A].[Id] = [W].[ArtworkId] WHERE ([A].[isVisible] = 1) ORDER BY Id DESC OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;">
+            <SelectParameters>
+                <asp:Parameter Name="Skip" Type="Int32" DefaultValue="0"/>
+                <asp:Parameter Name="Take" Type="Int32" DefaultValue="12"/>
+                <asp:Parameter Name="CustomerId" Type="String"/>
+            </SelectParameters>
+        </asp:SqlDataSource>
 
+    </div>
+    <div class="d-flex justify-content-center align-items-center">
+        <UC:Pagination runat="server" ID="Pagination" StartingPage="0" />
     </div>
 </asp:Content>

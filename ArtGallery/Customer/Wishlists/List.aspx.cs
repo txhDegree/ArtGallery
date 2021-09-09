@@ -19,6 +19,8 @@ namespace ArtGallery.Customer.Wishlists
         protected void Page_Init(object sender, EventArgs e)
         {
             ArtworkSource.SelectParameters["CustomerId"].DefaultValue = Membership.GetUser().ProviderUserKey.ToString();
+            PagingSource.SelectParameters["CustomerId"].DefaultValue = ArtworkSource.SelectParameters["CustomerId"].DefaultValue;
+            Pagination.initialize(ArtworkSource, PagingSource, 12);
         }
         protected void Page_Load(object sender, EventArgs e)
         {

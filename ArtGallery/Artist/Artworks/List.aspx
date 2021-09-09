@@ -44,7 +44,7 @@
             <asp:SqlDataSource ID="PagingSource" runat="server" ConnectionString="<%$ ConnectionStrings:ArtDBConnStr %>" SelectCommand="SELECT * FROM [Artworks] WHERE ([ArtistId] = @ArtistId) ORDER BY Id DESC OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY">
                 <SelectParameters>
                     <asp:Parameter Name="Skip" Type="Int32" DefaultValue="0"/>
-                    <asp:Parameter Name="Take" Type="Int32" DefaultValue="10"/>
+                    <asp:Parameter Name="Take" Type="Int32" DefaultValue="12"/>
                     <asp:Parameter Name="ArtistId" Type="String"/>
                 </SelectParameters>
             </asp:SqlDataSource>
