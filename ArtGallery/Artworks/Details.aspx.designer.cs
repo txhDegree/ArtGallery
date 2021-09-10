@@ -78,6 +78,15 @@ namespace ArtGallery.Customer.Artworks
         protected global::System.Web.UI.WebControls.RangeValidator rangeValidator;
 
         /// <summary>
+        /// ArtistUrl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor ArtistUrl;
+
+        /// <summary>
         /// lblArtistName control.
         /// </summary>
         /// <remarks>
@@ -94,15 +103,6 @@ namespace ArtGallery.Customer.Artworks
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblYear;
-
-        /// <summary>
-        /// btnBuyNow control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnBuyNow;
 
         /// <summary>
         /// btnAddToCart control.

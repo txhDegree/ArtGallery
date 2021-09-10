@@ -16,7 +16,6 @@ namespace ArtGallery.Customer.Carts
     {
         protected Boolean checkoutAvailable = true;
         protected Boolean isDeleted = false;
-        protected int page = 1;
         protected void Page_Init(object sender, EventArgs e)
         {
             ArtworkSource.SelectParameters["CustomerId"].DefaultValue = Membership.GetUser().ProviderUserKey.ToString();

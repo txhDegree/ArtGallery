@@ -18,7 +18,6 @@ namespace ArtGallery.Customer.Artworks
         protected Boolean unableToRemovedFromWishlist = false;
         protected Boolean isAddedToWishlist = false;
         protected Boolean isInWishlist = false;
-        protected int page = 1;
         protected void Page_Init(object sender, EventArgs e)
         {
             MembershipUser user = Membership.GetUser();

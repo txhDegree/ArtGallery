@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Web.Security;
+using System.IO;
 
 namespace ArtGallery.Artist.Artworks
 {
@@ -70,6 +71,16 @@ namespace ArtGallery.Artist.Artworks
             isUpdated = cmd.ExecuteNonQuery() > 0;
             
             if(FileUpload.HasFile) {
+                var StoragePath = Server.MapPath("~/Storage/");
+                if (!Directory.Exists(StoragePath))
+                {
+                    Directory.CreateDirectory(StoragePath);
+                }
+                var ArtworkPath = Server.MapPath("~/Storage/Artworks/");
+                if (!Directory.Exists(ArtworkPath))
+                {
+                    Directory.CreateDirectory(ArtworkPath);
+                }
                 FileUpload.SaveAs(Server.MapPath("~/Storage/Artworks/" + Request.QueryString["Id"] + System.IO.Path.GetExtension(FileUpload.FileName)));
                 cmd = new SqlCommand("UPDATE Artworks SET Image = @Image WHERE Id = @Id AND ArtistId = @ArtistId",conn);
                 cmd.Parameters.AddWithValue("@Image", Request.QueryString["Id"] + System.IO.Path.GetExtension(FileUpload.FileName));

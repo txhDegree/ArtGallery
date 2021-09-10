@@ -22,7 +22,8 @@ namespace ArtGallery.Controls
         public void initialize(SqlDataSource AllSource, SqlDataSource PagingSource, int PerPage)
         {
             // Get TotalRecord
-            TotalRecord = ((System.Data.DataView)AllSource.Select(DataSourceSelectArguments.Empty)).Count;
+            System.Data.DataView allDataView = (System.Data.DataView)AllSource.Select(DataSourceSelectArguments.Empty);
+            TotalRecord = allDataView == null ? 0 : allDataView.Count;
             
             // Set RecordPerPage
             RecordPerPage = PerPage;

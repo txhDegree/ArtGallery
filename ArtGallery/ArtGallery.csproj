@@ -87,6 +87,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Artist\Profiles\Edit.aspx" />
+    <Content Include="Artworks\Artist.aspx" />
     <Content Include="Controls\Pagination.ascx" />
     <Content Include="Customer\Dashboard.aspx" />
     <Content Include="Error\404.aspx" />
@@ -1776,6 +1778,20 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Artist\Profiles\Edit.aspx.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Artist\Profiles\Edit.aspx.designer.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Artworks\Artist.aspx.cs">
+      <DependentUpon>Artist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Artworks\Artist.aspx.designer.cs">
+      <DependentUpon>Artist.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Pagination.ascx.cs">
       <DependentUpon>Pagination.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -13,6 +13,7 @@ namespace ArtGallery.Customer.Artworks
     public partial class Details : System.Web.UI.Page
     {
         protected Boolean isAddedToCart = false;
+        protected Boolean isOutOfStock = false;
         protected void Page_Load(object sender, EventArgs e)
         {
             SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
@@ -32,9 +33,17 @@ namespace ArtGallery.Customer.Artworks
                 lblArtistName.Text = reader["UserName"].ToString();
                 lblYear.Text = Convert.ToDateTime(reader["Year"].ToString()).Year.ToString();
 
-                txtQty.Attributes.Add("max", reader["StockQuantity"].ToString());
-                rangeValidator.MaximumValue = reader["StockQuantity"].ToString();
-                rangeValidator.Text = "The quantity must be from 1 to " + reader["StockQuantity"].ToString();
+                if(Convert.ToInt32(reader["StockQuantity"].ToString()) <= 0)
+                {
+                    isOutOfStock = true;
+                } else
+                {
+                    txtQty.Attributes.Add("max", reader["StockQuantity"].ToString());
+                    rangeValidator.MaximumValue = reader["StockQuantity"].ToString();
+                    rangeValidator.Text = "The quantity must be from 1 to " + reader["StockQuantity"].ToString();
+                }
+
+                ArtistUrl.HRef = "/Artworks/Artist.aspx?Artist=" + reader["UserName"].ToString();
 
                 image.Src = Convert.IsDBNull(reader["Image"]) ? "/public/img/image.svg" : "/Storage/Artworks/" + reader["Image"].ToString();
 

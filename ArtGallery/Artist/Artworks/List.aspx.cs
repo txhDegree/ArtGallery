@@ -10,7 +10,6 @@ namespace ArtGallery.Artist.Artworks
 {
     public partial class List : System.Web.UI.Page
     {
-        protected int page = 1;
         protected void Page_Init(object sender, EventArgs e)
         {
             ArtistArtworkSource.SelectParameters["ArtistId"].DefaultValue = Membership.GetUser().ProviderUserKey.ToString();

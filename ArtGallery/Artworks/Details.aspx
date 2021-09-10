@@ -11,28 +11,33 @@
                     <h1 class="mt-4" runat="server" id="lblTitle">Title</h1>
                     <h5 class="mt-2" runat="server" id="lblDesc" >Description here.</h5>
                     <div class="mt-2 alert alert-info">Price: <span class="font-weight-bold h5" runat="server" id="lblPrice">RM</span></div>
-                    <div class="row px-3">
-                        <div class="d-inline-block mr-3">Quantity: </div>
-                        <div class="input-group mx-3" style="width: 150px">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-outline-secondary" type="button" data-minus="">-</button>
+                    <% if(!isOutOfStock){ %>
+                        <div class="row px-3">
+                            <div class="d-inline-block mr-3">Quantity: </div>
+                            <div class="input-group mx-3" style="width: 150px">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary" type="button" data-minus="">-</button>
+                                </div>
+                                <asp:TextBox runat="server" CssClass="form-control" ID="txtQty" TextMode="Number" min="1" max="999" Text="1"></asp:TextBox>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" data-plus="">+</button>
+                                </div>
                             </div>
-                            <asp:TextBox runat="server" CssClass="form-control" ID="txtQty" TextMode="Number" min="1" max="999" Text="1"></asp:TextBox>
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" data-plus="">+</button>
-                            </div>
+                            <div class="ml-3"><span class="badge badge-info" runat="server" id="lblStockQty">0</span> in stock</div>
                         </div>
-                        <div class="ml-3"><span class="badge badge-info" runat="server" id="lblStockQty">0</span> in stock</div>
-                    </div>
-                    <asp:RangeValidator CssClass="text-danger" ID="rangeValidator" ControlToValidate="txtQty" MinimumValue="1" Type="Integer" EnableClientScript="false" runat="server" />
+                        <asp:RangeValidator CssClass="text-danger" ID="rangeValidator" ControlToValidate="txtQty" MinimumValue="1" MaximumValue="1" Type="Integer" EnableClientScript="false" runat="server" />
+                    <% } else { %>
+                        <div class="mt-2 alert alert-danger">Oops... The Product is currently out of stock...</div>
+                    <% } %>
                     <div class="mt-3">
-                        <span class="badge badge-info" data-toggle="tooltip" title="Artist"><i class="fa fa-fw fa-user"></i> <asp:Label runat="server" ID="lblArtistName" Text="ArtistName"></asp:Label></span>
+                        <a runat="server" id="ArtistUrl" class="badge badge-info" data-toggle="tooltip" title="Artist"><i class="fa fa-fw fa-user"></i> <asp:Label runat="server" ID="lblArtistName" Text="ArtistName"></asp:Label></a>
                         <span class="badge badge-warning" data-toggle="tooltip" title="Year Created"><i class="fa fa-fw fa-calendar-alt"></i> <asp:Label runat="server" ID="lblYear" Text="1900"></asp:Label></span>
                     </div>
+                    <% if(!isOutOfStock){ %>
                     <div class="mt-1">
-                        <!--- <asp:LinkButton runat="server" ID="btnBuyNow" CssClass="btn btn-info">Buy Now</asp:LinkButton> -->
                         <asp:LinkButton runat="server" ID="btnAddToCart" CssClass="btn btn-success" OnClick="btnAddToCart_Click"><i class="fa fa-fw fa-cart-plus"></i> Add To Cart</asp:LinkButton>
                     </div>
+                    <% } %>
                     <% if (isAddedToCart) { %>
                         <div class="mt-2 alert alert-success">Item is added to your cart successfully!</div>
                     <% } %>
