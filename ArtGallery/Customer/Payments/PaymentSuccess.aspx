@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-12"><h3>Payment Success!</h3></div>
         <div class="col-12 my-2">
-            <div class="alert alert-success">Your payment is completed, the Artists will prepare your order soon! <a class="btn btn-success" href="/Customer/Orders/List.aspx">Back To Art Galleries</a></div>
+            <div class="alert alert-success">Your payment is completed, the Artists will prepare your order soon! <a class="btn btn-success" href="/Customer/Orders/List.aspx">Go To Order List</a></div>
         </div>
         <div class="col-md-6 mx-auto"><img class="w-100" src="/public/img/payment_success.svg" alt="Payment Success Img" /></div>
     </div>

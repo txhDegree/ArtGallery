@@ -10,6 +10,7 @@ DROP TABLE Artworks;
 DROP TABLE Addresses;
 TRUNCATE TABLE aspnet_UsersInRoles;
 TRUNCATE TABLE aspnet_Membership;
+TRUNCATE TABLE aspnet_Profile;
 DELETE FROM aspnet_Users;
 -- Create Address Table
 CREATE TABLE [dbo].[Addresses] (

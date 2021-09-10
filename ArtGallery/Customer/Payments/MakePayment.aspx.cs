@@ -56,8 +56,8 @@ namespace ArtGallery.Customer.Payments
 
             var options = new SessionCreateOptions
             {
-                SuccessUrl = Request.Url.Scheme + "://" + Request.Url.Host + ":" + Request.Url.Port + "/Customer/Payments/PaymentSuccess.aspx?Id="+paymentId,
-                CancelUrl = Request.Url.Scheme + "://" + Request.Url.Host + ":" + Request.Url.Port + "/Customer/Payments/Cancel.aspx?Id=" + paymentId,
+                SuccessUrl = Request.Url.Scheme + "://" + Request.Url.Host + ":" + Request.Url.Port + "/Customer/Payments/PaymentSuccess.aspx?Id="+paymentId + "&email=" + Membership.GetUser().Email,
+                CancelUrl = Request.Url.Scheme + "://" + Request.Url.Host + ":" + Request.Url.Port + "/Customer/Payments/Cancel.aspx?Id=" + paymentId + "&email=" + Membership.GetUser().Email,
                 PaymentMethodTypes = new List<string> { "card" },
                 LineItems = items,
                 Mode = "payment",

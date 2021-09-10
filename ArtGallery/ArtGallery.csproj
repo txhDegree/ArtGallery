@@ -91,6 +91,7 @@
     <Content Include="Artworks\Artist.aspx" />
     <Content Include="Controls\Pagination.ascx" />
     <Content Include="Customer\Dashboard.aspx" />
+    <Content Include="Email\Payment.html" />
     <Content Include="Error\404.aspx" />
     <Content Include="App_Data\ArtDB.mdf" />
     <Content Include="App_Data\ArtDB_log.ldf">
@@ -1806,6 +1807,7 @@
     <Compile Include="Customer\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Email\Mail.cs" />
     <Compile Include="Error\404.aspx.cs">
       <DependentUpon>404.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
