@@ -32,6 +32,7 @@ namespace ArtGallery.Artist.Profiles
         protected void Page_Load(object sender, EventArgs e)
         {
             this.PreRender += Page_PreRender;
+            RangeValidatorDOB.MaximumValue = DateTime.Now.Date.ToString("MM/dd/yyyy");
         }
 
         protected void saveBtn_Click(object sender, EventArgs e)

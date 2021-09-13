@@ -16,6 +16,7 @@ namespace ArtGallery.Artist.Artworks
         protected Boolean isCreated = false;
         protected void Page_Load(object sender, EventArgs e)
         {
+            RangeValidatorYear.MaximumValue = DateTime.Now.Year.ToString();
         }
 
         protected void saveBtn_Click(object sender, EventArgs e)
@@ -63,10 +64,21 @@ namespace ArtGallery.Artist.Artworks
 
             if (isCreated)
             {
+                RangeValidatorPrice.IsValid = true;
                 txtTitle.Text = txtYear.Text = txtPrice.Text = txtStockQty.Text = txtDesc.Text = string.Empty;
             }
 
             conn.Close();
+        }
+
+        protected void CustomValidatorStockQty_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            int stockQty = Convert.ToInt32(args.Value);
+            if(stockQty < 0)
+            {
+                args.IsValid = false;
+                CustomValidatorStockQty.ErrorMessage = "Stock Quantity cannot be lesser than 0";
+            }
         }
     }
 }

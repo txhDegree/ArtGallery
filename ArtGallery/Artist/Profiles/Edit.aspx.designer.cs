@@ -15,6 +15,15 @@ namespace ArtGallery.Artist.Profiles
     {
 
         /// <summary>
+        /// RangeValidatorDOB control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator RangeValidatorDOB;
+
+        /// <summary>
         /// txtDOB control.
         /// </summary>
         /// <remarks>
@@ -40,6 +49,15 @@ namespace ArtGallery.Artist.Profiles
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload FileUpload;
+
+        /// <summary>
+        /// ValidationSummary1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary1;
 
         /// <summary>
         /// saveBtn control.

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArtGallery.Email;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
@@ -116,6 +117,19 @@ namespace ArtGallery.Artist.Orders
             cmd.Parameters.AddWithValue("@TrackingNo", txtTrackingNo.Text.Trim());
             cmd.Parameters.AddWithValue("@Id", Request.Params["Id"]);
             isUpdated = cmd.ExecuteNonQuery() > 0;
+
+            if (isUpdated) {
+                cmd = new SqlCommand("SELECT Email FROM Orders O LEFT JOIN aspnet_Membership M ON O.CustomerId = M.UserId WHERE O.Id = @Id", conn);
+                cmd.Parameters.AddWithValue("@Id", Request.Params["Id"]);
+                SqlDataReader reader = cmd.ExecuteReader();
+                if(reader.HasRows)
+                {
+                    reader.Read();
+                    string url = Request.Url.Scheme + "://" + Request.Url.Host + ":" + Request.Url.Port + "/Customer/Orders/List.aspx";
+                    Mail.sendShippedEmail(Request.Params["Id"], txtTrackingNo.Text.Trim(), url, reader["Email"].ToString(), Server.MapPath("~/Email/Shipping.html"));
+                    reader.Close();
+                }
+            }
             conn.Close();
         }
     }

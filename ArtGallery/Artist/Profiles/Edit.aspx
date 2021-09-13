@@ -15,7 +15,10 @@
                     <% } %>
                     <div class="form-row">
                         <div class="form-group col-12">
-                            <label>Date Of Birth</label>
+                            <label>
+                                Date Of Birth
+                                <asp:RangeValidator ID="RangeValidatorDOB" runat="server" ErrorMessage="Your Date Of Birth is invalid" Text="*" Type="Date" ControlToValidate="txtDOB" CssClass="text-danger" MinimumValue="1/1/1900"></asp:RangeValidator>
+                            </label>
                             <asp:TextBox runat="server" CssClass="form-control" placeholder="Date Of Birth" ID="txtDOB" MaxLength="10" TextMode="Date"></asp:TextBox>
                         </div>
                         <div class="form-group col-12">
@@ -32,6 +35,7 @@
                     <div class="col-12 d-flex justify-content-center align-items-center">
                         <img src="<%= ImgSrc %>" alt="" style="max-height: 300px; max-width: 300px;" id="img" />
                     </div>
+                    <asp:ValidationSummary ID="ValidationSummary1" runat="server" CssClass="alert alert-danger" />
                 </div>
                 <div class="card-footer">
                     <asp:LinkButton runat="server" ID="saveBtn" CssClass="btn btn-primary" OnClick="saveBtn_Click"><i class="fa fa-fw fa-save"></i> Save</asp:LinkButton>

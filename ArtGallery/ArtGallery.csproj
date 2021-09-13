@@ -91,6 +91,7 @@
     <Content Include="Artworks\Artist.aspx" />
     <Content Include="Controls\Pagination.ascx" />
     <Content Include="Customer\Dashboard.aspx" />
+    <Content Include="Email\Shipping.html" />
     <Content Include="Email\Payment.html" />
     <Content Include="Error\404.aspx" />
     <Content Include="App_Data\ArtDB.mdf" />

@@ -13,27 +13,42 @@
                     <% } %>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label>Artwork Title</label>
+                            <label>Artwork Title
+                                <asp:RequiredFieldValidator ID="RequiredTitleValidator" ControlToValidate="txtTitle" runat="server" ErrorMessage="Artwork Title is required" Text="*" CssClass="text-danger"></asp:RequiredFieldValidator>
+                            </label>
                             <asp:TextBox runat="server" CssClass="form-control" placeholder="Artwork Title" ID="txtTitle" MaxLength="50"></asp:TextBox>
                         </div>
                         <div class="form-group col-md-6">
-                            <label>Year Created</label>
+                            <label>Year Created
+                                <asp:RequiredFieldValidator ID="RequiredYearValidator" ControlToValidate="txtYear" runat="server" ErrorMessage="Year Created is required" Text="*" CssClass="text-danger"></asp:RequiredFieldValidator>
+                                <asp:RangeValidator ID="RangeValidatorYear" Type="Integer" ControlToValidate="txtYear" runat="server" ErrorMessage="This is not a valid year" Text="*" CssClass="text-danger" MinimumValue="1000"></asp:RangeValidator>
+                            </label>
                             <asp:TextBox runat="server" CssClass="form-control" placeholder="Year Created" MaxLength="4" ID="txtYear" ></asp:TextBox>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label>Artwork Price</label>
+                            <label>Artwork Price
+                                <asp:RequiredFieldValidator ID="RequiredPriceValidator" ControlToValidate="txtPrice" runat="server" ErrorMessage="Artwork Price is required" Text="*" CssClass="text-danger"></asp:RequiredFieldValidator>
+                                <asp:RangeValidator ID="RangeValidatorPrice" Type="Double" ControlToValidate="txtPrice" runat="server" ErrorMessage="This is not a valid price" Text="*" CssClass="text-danger" MinimumValue="0.00"></asp:RangeValidator>
+                            </label>
                             <asp:TextBox runat="server" CssClass="form-control" placeholder="0.00" TextMode="Number" ID="txtPrice" min="0"></asp:TextBox>
                         </div>
                         <div class="form-group col-md-6">
-                            <label>Stock Available</label>
+                            <label>
+                                Stock Available
+                                <asp:RequiredFieldValidator ID="RequiredStockQtyValidator1" ControlToValidate="txtStockQty" runat="server" ErrorMessage="Stock Quantity is required" Text="*" CssClass="text-danger"></asp:RequiredFieldValidator>
+                                <asp:CustomValidator ID="CustomValidatorStockQty" runat="server" ErrorMessage="" Text="*" ControlToValidate="txtStockQty" OnServerValidate="CustomValidatorStockQty_ServerValidate"></asp:CustomValidator>
+                            </label>
                             <asp:TextBox runat="server" CssClass="form-control" placeholder="Stock Available" TextMode="Number" ID="txtStockQty" min="0" ></asp:TextBox>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-12">
-                            <label>Description</label>
+                            <label>
+                                Description
+                                <asp:RequiredFieldValidator ID="RequiredDescValidator1" ControlToValidate="txtDesc" runat="server" ErrorMessage="Description for artwork is required" Text="*" CssClass="text-danger"></asp:RequiredFieldValidator>
+                            </label>
                             <asp:TextBox runat="server" CssClass="form-control" TextMode="Multiline" ID="txtDesc" MaxLength="200"></asp:TextBox>
                         </div>
                     </div>
@@ -51,6 +66,7 @@
                             <asp:FileUpload runat="server" CssClass="form-control" ID="FileUpload" AllowMultiple="false" accept="image/*"/>
                         </div>
                     </div>
+                    <asp:ValidationSummary ID="ValidationSummary1" runat="server" CssClass="alert alert-danger" />
                 </div>
                 <div class="card-footer">
                     <asp:LinkButton runat="server" ID="saveBtn" CssClass="btn btn-primary" OnClick="saveBtn_Click"><i class="fa fa-fw fa-save"></i> Save</asp:LinkButton>

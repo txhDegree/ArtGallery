@@ -13,17 +13,25 @@
                     <% } %>
                     <div class="form-row">
                         <div class="form-group col-12">
-                            <label>Address Title</label>
+                            <label>Address Title
+                                <asp:RequiredFieldValidator ID="RequiredTitleValidator" runat="server" ErrorMessage="Address Title is required" Text="*" CssClass="text-danger" ControlToValidate="txtTitle"></asp:RequiredFieldValidator>
+                            </label>
                             <asp:TextBox runat="server" CssClass="form-control" placeholder="e.g. Home, Office..." ID="txtTitle" MaxLength="50"></asp:TextBox>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label>Receiver Name</label>
+                            <label>
+                                Receiver Name
+                                <asp:RequiredFieldValidator ID="RequiredNameValidator" runat="server" ErrorMessage="Receiver Name is required" Text="*" CssClass="text-danger" ControlToValidate="txtName"></asp:RequiredFieldValidator>
+                            </label>
                             <asp:TextBox runat="server" CssClass="form-control" placeholder="Receiver Name" ID="txtName" MaxLength="50"></asp:TextBox>
                         </div>
                         <div class="form-group col-md-6">
-                            <label>Receiver Contact</label>
+                            <label>Receiver Contact
+                                <asp:RequiredFieldValidator ID="RequiredContactValidator" runat="server" ErrorMessage="Receiver Contact is required" Text="*" CssClass="text-danger" ControlToValidate="txtContact"></asp:RequiredFieldValidator>
+                                <asp:RegularExpressionValidator ID="RegularExpressionValidatorContact" runat="server" ErrorMessage="Invalid Contact Number" Text="*" CssClass="text-danger" ControlToValidate="txtContact" ValidationExpression="\d{8,9}"  ></asp:RegularExpressionValidator>
+                            </label>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">+60</span>
@@ -34,7 +42,9 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-12">
-                            <label>Address</label>
+                            <label>Address
+                                <asp:RequiredFieldValidator ID="RequiredAddressValidator" runat="server" ErrorMessage="Address is required" Text="*" CssClass="text-danger" ControlToValidate="txtAddress"></asp:RequiredFieldValidator>
+                            </label>
                             <asp:TextBox runat="server" CssClass="form-control" TextMode="Multiline" ID="txtAddress" MaxLength="64"></asp:TextBox>
                         </div>
                     </div>
@@ -71,6 +81,7 @@
                             </asp:SqlDataSource>
                         </div>
                     </div>
+                    <asp:ValidationSummary ID="ValidationSummary1" runat="server" CssClass="alert alert-danger" />
                 </div>
                 <div class="card-footer">
                     <asp:LinkButton runat="server" ID="saveBtn" CssClass="btn btn-primary" OnClick="saveBtn_Click"><i class="fa fa-fw fa-save"></i> Save</asp:LinkButton>

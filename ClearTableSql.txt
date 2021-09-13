@@ -18,7 +18,7 @@ CREATE TABLE [dbo].[Addresses] (
     [Label]           NCHAR (50)       NULL,
     [ReceiverName]    NVARCHAR (50)    NULL,
     [ReceiverContact] NCHAR (10)       NULL,
-    [Address]         NCHAR (64)       NULL,
+    [Address]         NCHAR (70)       NULL,
     [City]            NCHAR (10)       NULL,
     [PostalCode]      NCHAR (5)        NULL,
     [State]           NCHAR (3)        NULL,

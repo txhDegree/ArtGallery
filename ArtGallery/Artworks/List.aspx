@@ -1,14 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Artworks/Navbar.master" AutoEventWireup="true" CodeBehind="List.aspx.cs" Inherits="ArtGallery.Customer.Artworks.List" %>
 <%@ Register Src="~/Controls/Pagination.ascx" TagPrefix="UC" TagName="Pagination" %>
-<asp:Content ID="style" ContentPlaceHolderID="Style" runat="server">
-    <style>
-        .text-overflow-hide {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-    </style>
-</asp:Content>
+<asp:Content ID="style" ContentPlaceHolderID="Style" runat="server"></asp:Content>
 <asp:Content ID="title" ContentPlaceHolderID="Title" runat="server">Art Galleries - Customer</asp:Content>
 <asp:Content ID="Content" ContentPlaceHolderID="MainContent" runat="server">
     <h1 class="h3 mb-4 text-gray-800">Arts Galleries</h1>

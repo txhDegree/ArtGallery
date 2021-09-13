@@ -91,5 +91,15 @@ namespace ArtGallery.Artist.Artworks
 
             conn.Close();
         }
+
+        protected void CustomValidatorStockQty_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            int stockQty = Convert.ToInt32(args.Value);
+            if (stockQty < 0)
+            {
+                args.IsValid = false;
+                CustomValidatorStockQty.ErrorMessage = "Stock Quantity cannot be lesser than 0";
+            }
+        }
     }
 }
