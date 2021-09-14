@@ -139,7 +139,7 @@
                                     </a>
                                     <div class="portfolio-caption">
                                         <div class="portfolio-caption-heading"><%# Eval("Title") %></div>
-                                        <div class="portfolio-caption-subheading text-muted"><%# Eval("Description") %></div>
+                                        <div class="portfolio-caption-subheading text-muted text-overflow-hide"><%# Eval("Description") %></div>
                                     </div>
                                 </div>
                             </div>
