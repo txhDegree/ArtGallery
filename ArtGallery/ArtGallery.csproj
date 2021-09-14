@@ -87,6 +87,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Artist\Orders\Summary.aspx" />
     <Content Include="Artist\Profiles\Edit.aspx" />
     <Content Include="Artist\ResetPassword.aspx" />
     <Content Include="Artworks\Artist.aspx" />
@@ -1784,6 +1785,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Artist\Orders\Summary.aspx.cs">
+      <DependentUpon>Summary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Artist\Orders\Summary.aspx.designer.cs">
+      <DependentUpon>Summary.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Artist\Profiles\Edit.aspx.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

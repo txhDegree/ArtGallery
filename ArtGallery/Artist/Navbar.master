@@ -36,11 +36,18 @@
                     </div>
                 </div>
             </li>
-
             <li class="nav-item">
-                <a class="nav-link" href="/Artist/Orders/List.aspx">
-                    <i class="fas fa-fw fa-truck-loading"></i>
-                    <span>Orders</span></a>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOrders"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fa fa-fw fa-truck-loading"></i>
+                    <span>Orders</span>
+                </a>
+                <div id="collapseOrders" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="/Artist/Orders/List.aspx">My Orders</a>
+                        <a class="collapse-item" href="/Artist/Orders/Summary.aspx">Order Summary</a>
+                    </div>
+                </div>
             </li>
 
             <hr class="sidebar-divider d-none d-md-block"/>

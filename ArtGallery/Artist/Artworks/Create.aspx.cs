@@ -21,10 +21,18 @@ namespace ArtGallery.Artist.Artworks
 
         protected void saveBtn_Click(object sender, EventArgs e)
         {
+            double price = 0;
+            int stock = 0;
+            try
+            {
+                price = Convert.ToDouble(txtPrice.Text);
+                stock = Convert.ToInt32(txtStockQty.Text);
+            } catch (FormatException ex)
+            {
+                return;
+            }
             string title = txtTitle.Text;
             string year = txtYear.Text;
-            double price = Convert.ToDouble(txtPrice.Text);
-            int stock = Convert.ToInt32(txtStockQty.Text);
             string desc = txtDesc.Text;
             int isVisible = cIsVisible.Checked ? 1 : 0;
 
