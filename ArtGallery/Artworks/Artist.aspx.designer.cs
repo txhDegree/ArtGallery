@@ -51,22 +51,13 @@ namespace ArtGallery.Artworks
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl abtMe;
 
         /// <summary>
-        /// NoRecords control.
+        /// ArtworkList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl NoRecords;
-
-        /// <summary>
-        /// Repeater1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater Repeater1;
+        protected global::ArtGallery.Controls.ArtworkList ArtworkList;
 
         /// <summary>
         /// ArtworkSource control.
@@ -85,14 +76,5 @@ namespace ArtGallery.Artworks
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource PagingSource;
-
-        /// <summary>
-        /// Pagination control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::ArtGallery.Controls.Pagination Pagination;
     }
 }

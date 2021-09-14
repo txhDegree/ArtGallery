@@ -48,7 +48,7 @@
 </asp:Content>
 <asp:Content ID="script" ContentPlaceHolderID="Script" runat="server">
     <script defer="defer">
-        const qty = document.querySelector("#Content_Content_txtQty")
+        const qty = document.querySelector("#Content_MainContent_txtQty")
         document.querySelector("[data-minus]").addEventListener('click', (e) => {
             qty.value = Math.max(parseInt(qty.value)-1, 1)
         })

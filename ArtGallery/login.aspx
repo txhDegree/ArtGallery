@@ -41,9 +41,9 @@
                                         </LayoutTemplate>
                                     </asp:Login>
                                     <hr>
-                                    <!-- <div class="text-center">
-                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
-                                    </div> -->
+                                    <div class="text-center">
+                                        <a class="small" href="/PasswordRecover.aspx">Forgot Password?</a>
+                                    </div>
                                     <div class="text-center">
                                         <a class="small" href="/Customer/register.aspx">Create a Customer Account!</a>
                                     </div>

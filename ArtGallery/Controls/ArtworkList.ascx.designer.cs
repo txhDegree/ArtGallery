@@ -7,38 +7,38 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ArtGallery.Customer.Artworks
+namespace ArtGallery.Controls
 {
 
 
-    public partial class List
+    public partial class ArtworkList
     {
 
         /// <summary>
-        /// ArtworkList control.
+        /// NoRecords control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::ArtGallery.Controls.ArtworkList ArtworkList;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl NoRecords;
 
         /// <summary>
-        /// ArtworkSource control.
+        /// Repeater1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource ArtworkSource;
+        protected global::System.Web.UI.WebControls.Repeater Repeater1;
 
         /// <summary>
-        /// PagingSource control.
+        /// Pagination control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource PagingSource;
+        protected global::ArtGallery.Controls.Pagination Pagination;
     }
 }

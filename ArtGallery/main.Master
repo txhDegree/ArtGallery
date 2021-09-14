@@ -18,6 +18,12 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    .img-overflow {
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+        background-position: center center;
+        background-size: cover;
+    }
     </style>
     <asp:ContentPlaceHolder ID="MasterStyle" runat="server"></asp:ContentPlaceHolder>
     <title><asp:ContentPlaceHolder ID="MasterTitle" runat="server"></asp:ContentPlaceHolder></title>

@@ -90,6 +90,7 @@
     <Content Include="Artist\Profiles\Edit.aspx" />
     <Content Include="Artist\ResetPassword.aspx" />
     <Content Include="Artworks\Artist.aspx" />
+    <Content Include="Controls\ArtworkList.ascx" />
     <Content Include="Controls\Pagination.ascx" />
     <Content Include="Customer\Dashboard.aspx" />
     <Content Include="Customer\ResetPassword.aspx" />
@@ -1803,6 +1804,13 @@
     </Compile>
     <Compile Include="Artworks\Artist.aspx.designer.cs">
       <DependentUpon>Artist.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ArtworkList.ascx.cs">
+      <DependentUpon>ArtworkList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ArtworkList.ascx.designer.cs">
+      <DependentUpon>ArtworkList.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\Pagination.ascx.cs">
       <DependentUpon>Pagination.ascx</DependentUpon>
