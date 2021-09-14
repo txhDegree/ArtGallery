@@ -14,6 +14,7 @@ namespace ArtGallery.Customer.Artworks
     {
         protected Boolean isAddedToCart = false;
         protected Boolean isOutOfStock = false;
+        protected Boolean maxOfCart = false;
         protected void Page_Load(object sender, EventArgs e)
         {
             SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
@@ -73,9 +74,21 @@ namespace ArtGallery.Customer.Artworks
             cmd.Parameters.AddWithValue("@CustomerId", user.ProviderUserKey);
             cmd.Parameters.AddWithValue("@ArtworkId", Request.Params["Id"]);
             reader = cmd.ExecuteReader();
-            if (reader.HasRows)
+            if (reader.Read())
             {
+                int total = Convert.ToInt32(reader["Quantity"]) + int.Parse(txtQty.Text);
                 reader.Close();
+                cmd = new SqlCommand("SELECT StockQuantity FROM Artworks WHERE Id = @ArtworkId", conn);
+                cmd.Parameters.AddWithValue("@ArtworkId", Request.Params["Id"]);
+                int stockQty = Convert.ToInt32(cmd.ExecuteScalar());
+                
+                if (stockQty < total)
+                {
+                    maxOfCart = true;
+                    conn.Close();
+                    return;
+                }
+
                 cmd = new SqlCommand("UPDATE Carts SET Quantity = Quantity + @Qty, AddedAt = @AddedAt WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", conn);
             }
             else

@@ -41,6 +41,9 @@
                     <% if (isAddedToCart) { %>
                         <div class="mt-2 alert alert-success">Item is added to your cart successfully!</div>
                     <% } %>
+                    <% if (maxOfCart) { %>
+                        <div class="mt-2 alert alert-danger">Quantity selected has reached the max quantity you can add into your cart.</div>
+                    <% } %>
                 </div>
             </div>
         </div>
