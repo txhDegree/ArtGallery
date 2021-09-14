@@ -10,6 +10,8 @@
     <div class="alert alert-success">Item is removed from your wishlist successfully!</div>
 <% } else if (unableToRemovedFromWishlist) { %>
     <div class="alert alert-warning">Unable to remove, the item is not in your wishlist!</div>
+<% } else if (maxOfCart) { %>
+    <div class="alert alert-danger">Quantity selected has reached the max quantity you can add into your cart.</div>
 <% }%>
 <div class="row d-flex">
     <div class="col-12 text-center" runat="server" visible="false" id="NoRecords">

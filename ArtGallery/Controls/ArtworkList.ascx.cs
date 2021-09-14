@@ -20,6 +20,7 @@ namespace ArtGallery.Controls
         protected Boolean unableToRemovedFromWishlist = false;
         protected Boolean isAddedToWishlist = false;
         protected Boolean isInWishlist = false;
+        protected Boolean maxOfCart = false;
         protected void Page_Load(object sender, EventArgs e)
         {
             Pagination.initialize(AllSource, PagingSource, 12);
@@ -90,7 +91,19 @@ namespace ArtGallery.Controls
                     reader = cmd.ExecuteReader();
                     if (reader.HasRows)
                     {
+                        int total = Convert.ToInt32(reader["Quantity"]) + 1;
                         reader.Close();
+                        cmd = new SqlCommand("SELECT StockQuantity FROM Artworks WHERE Id = @ArtworkId", conn);
+                        cmd.Parameters.AddWithValue("@ArtworkId", Request.Params["Id"]);
+                        int stockQty = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        if (stockQty < total)
+                        {
+                            maxOfCart = true;
+                            conn.Close();
+                            return;
+                        }
+
                         cmd = new SqlCommand("UPDATE Carts SET Quantity = Quantity + @Qty, AddedAt = @AddedAt WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", conn);
                     }
                     else
