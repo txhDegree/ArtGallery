@@ -17,23 +17,48 @@ namespace ArtGallery.Artist.Orders
         protected Boolean isUpdated = false;
         protected void Page_Init(object sender, EventArgs e)
         {
-            OrderDetailsSource.SelectParameters["OrderId"].DefaultValue = Request.Params["Id"];
+            string id = Request.QueryString["Id"];
+            if (string.IsNullOrEmpty(id))
+            {
+                Response.StatusCode = 404;
+                Server.Transfer("/Error/404.aspx");
+                return;
+            }
+            OrderDetailsSource.SelectParameters["OrderId"].DefaultValue = id;
         }
 
         protected void Page_PreRender(object sender, EventArgs e) {
             if (!(isUpdated || !IsPostBack))
                 return;
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand("SELECT U.UserName, O.*, S.ReceiverName, S.ReceiverContact, S.TrackingNo, S.Address, S.PostalCode, C.CityName, S2.StateName FROM Orders O LEFT JOIN Shipments S ON O.ShipmentId = S.Id LEFT JOIN Cities C ON S.City = C.CityId LEFT JOIN States S2 ON S.State = S2.StateId , aspnet_Users U WHERE O.Id = @OrderId AND O.CustomerId = U.UserId", conn);
-            cmd.Parameters.AddWithValue("@OrderId", Request.Params["Id"]);
-            SqlDataReader reader = cmd.ExecuteReader();
-            if (reader.HasRows)
+            string id = Request.QueryString["Id"];
+            if (string.IsNullOrEmpty(id))
             {
-                reader.Read();
-                lblOrderId.InnerText = "#" + Convert.ToInt32(reader["Id"]).ToString("00000.##");
-
-                lblOrderAt.InnerText = smallOrderAt.InnerText = Convert.ToDateTime(reader["Date"]).ToString("dd/MM/yyyy hh:mm tt");
+                Response.StatusCode = 404;
+                Server.Transfer("/Error/404.aspx");
+                return;
+            }
+            if (!DBConnect.Open())
+            {
+                Response.StatusCode = 503;
+                Server.Transfer("/Error/503.aspx");
+                return;
+            }
+            SqlCommand cmd = new SqlCommand("SELECT U.UserName, O.*, S.ReceiverName, S.ReceiverContact, S.TrackingNo, S.Address, S.PostalCode, C.CityName, S2.StateName FROM Orders O LEFT JOIN Shipments S ON O.ShipmentId = S.Id LEFT JOIN Cities C ON S.City = C.CityId LEFT JOIN States S2 ON S.State = S2.StateId , aspnet_Users U WHERE O.Id = @OrderId AND O.CustomerId = U.UserId AND O.ArtistId = @artistId", DBConnect.conn);
+            cmd.Parameters.AddWithValue("@OrderId", id);
+            cmd.Parameters.AddWithValue("@artistId", Membership.GetUser().ProviderUserKey);
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                try
+                {
+                    lblOrderId.InnerText = "#" + Convert.ToInt32(reader["Id"]).ToString("00000.##");
+                    lblOrderAt.InnerText = smallOrderAt.InnerText = Convert.ToDateTime(reader["Date"]).ToString("dd/MM/yyyy hh:mm tt");
+                } catch
+                {
+                    Response.StatusCode = 500;
+                    Server.Transfer("/Error/500.aspx");
+                    return;
+                }
 
                 if (Convert.IsDBNull(reader["CompleteAt"]))
                 {
@@ -76,7 +101,15 @@ namespace ArtGallery.Artist.Orders
                 }
                 lblTrackingNo.InnerText = Convert.IsDBNull(reader["TrackingNo"]) ? "-" : reader["TrackingNo"].ToString();
                 lblCustomerName.InnerText = reader["UserName"].ToString();
-                lblAmountToPay.InnerText = "RM " + Convert.ToDecimal(reader["AmountToPay"]).ToString("F");
+                try
+                {
+                    lblAmountToPay.InnerText = "RM " + Convert.ToDecimal(reader["AmountToPay"]).ToString("F");
+                } catch
+                {
+                    Response.StatusCode = 500;
+                    Server.Transfer("/Error/500.aspx");
+                    return;
+                }
 
                 lblReceiverName.InnerText = reader["ReceiverName"].ToString();
                 lblReceiverContact.InnerText = "+60" + reader["ReceiverContact"].ToString();
@@ -85,7 +118,7 @@ namespace ArtGallery.Artist.Orders
 
                 status = reader["Status"].ToString().Trim();
             }
-            conn.Close();
+            DBConnect.conn.Close();
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -95,42 +128,84 @@ namespace ArtGallery.Artist.Orders
 
         protected void btnPrepare_Click(object sender, EventArgs e)
         {
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand("UPDATE Orders SET PreparingAt = @Now, Status = 'preparing' WHERE Id = @Id", conn);
+            string id = Request.QueryString["Id"];
+            if (string.IsNullOrEmpty(id))
+            {
+                Response.StatusCode = 404;
+                Server.Transfer("/Error/404.aspx");
+                return;
+            }
+            DBConnect.Open();
+            SqlCommand cmd = new SqlCommand("UPDATE Orders SET PreparingAt = @Now, Status = 'preparing' WHERE Id = @Id AND ArtistId = @artistId", DBConnect.conn);
             cmd.Parameters.AddWithValue("@Now", DateTime.Now);
-            cmd.Parameters.AddWithValue("@Id", Request.Params["Id"]);
+            cmd.Parameters.AddWithValue("@Id", id);
+            cmd.Parameters.AddWithValue("@artistId", Membership.GetUser().ProviderUserKey);
             isUpdated = cmd.ExecuteNonQuery() > 0;
-            conn.Close();
+            DBConnect.conn.Close();
         }
 
         protected void btnShipping_Click(object sender, EventArgs e)
         {
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand("UPDATE Orders SET ShippingAt = @Now, Status = 'shipping' WHERE Id = @Id", conn);
+            DBConnect.Open();
+            string id = Request.QueryString["Id"];
+            if (string.IsNullOrEmpty(id))
+            {
+                Response.StatusCode = 404;
+                Server.Transfer("/Error/404.aspx");
+                return;
+            }
+            SqlCommand cmd = new SqlCommand("UPDATE Orders SET ShippingAt = @Now, Status = 'shipping' WHERE Id = @Id AND ArtistId = @artistId", DBConnect.conn);
             cmd.Parameters.AddWithValue("@Now", DateTime.Now);
-            cmd.Parameters.AddWithValue("@Id", Request.Params["Id"]);
-            cmd.ExecuteNonQuery();
+            cmd.Parameters.AddWithValue("@Id", id);
+            cmd.Parameters.AddWithValue("@artistId", Membership.GetUser().ProviderUserKey);
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                Response.StatusCode = 500;
+                Server.Transfer("/Error/500.aspx");
+                return;
+            }
 
-            cmd = new SqlCommand("UPDATE Shipments SET TrackingNo = @TrackingNo WHERE Id = (SELECT ShipmentId FROM Orders WHERE Id = @Id)", conn);
+            cmd = new SqlCommand("UPDATE Shipments SET TrackingNo = @TrackingNo WHERE Id = (SELECT ShipmentId FROM Orders WHERE Id = @Id AND ArtistId = @artistId)", DBConnect.conn);
             cmd.Parameters.AddWithValue("@TrackingNo", txtTrackingNo.Text.Trim());
-            cmd.Parameters.AddWithValue("@Id", Request.Params["Id"]);
-            isUpdated = cmd.ExecuteNonQuery() > 0;
+            cmd.Parameters.AddWithValue("@Id", id);
+            cmd.Parameters.AddWithValue("@artistId", Membership.GetUser().ProviderUserKey);
+            try
+            {
+                isUpdated = cmd.ExecuteNonQuery() > 0;
+            }
+            catch
+            {
+                Response.StatusCode = 500;
+                Server.Transfer("/Error/500.aspx");
+                return;
+            }
 
             if (isUpdated) {
-                cmd = new SqlCommand("SELECT Email FROM Orders O LEFT JOIN aspnet_Membership M ON O.CustomerId = M.UserId WHERE O.Id = @Id", conn);
-                cmd.Parameters.AddWithValue("@Id", Request.Params["Id"]);
-                SqlDataReader reader = cmd.ExecuteReader();
-                if(reader.HasRows)
+                cmd = new SqlCommand("SELECT Email FROM Orders O LEFT JOIN aspnet_Membership M ON O.CustomerId = M.UserId WHERE O.Id = @Id AND O.ArtistId = @artistId", DBConnect.conn);
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.Parameters.AddWithValue("@artistId", Membership.GetUser().ProviderUserKey);
+                SqlDataReader reader;
+                try
                 {
-                    reader.Read();
+                    reader = cmd.ExecuteReader();
+                } catch
+                {
+                    Response.StatusCode = 500;
+                    Server.Transfer("/Error/500.aspx");
+                    return;
+                }
+                if(reader.Read())
+                {
                     string url = Request.Url.Scheme + "://" + Request.Url.Host + ":" + Request.Url.Port + "/Customer/Orders/List.aspx";
-                    Mail.sendShippedEmail(Request.Params["Id"], txtTrackingNo.Text.Trim(), url, reader["Email"].ToString(), Server.MapPath("~/Email/Shipping.html"));
+                    Mail.sendShippedEmail(id, txtTrackingNo.Text.Trim(), url, reader["Email"].ToString(), Server.MapPath("~/Email/Shipping.html"));
                     reader.Close();
                 }
             }
-            conn.Close();
+            DBConnect.conn.Close();
         }
     }
 }

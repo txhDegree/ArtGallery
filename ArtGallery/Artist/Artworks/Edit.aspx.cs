@@ -18,28 +18,47 @@ namespace ArtGallery.Artist.Artworks
         protected void Page_PreRender(object sender, EventArgs e) {
             if (!(isUpdated || !IsPostBack))
                 return;
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
-            SqlCommand cmd;
-            conn.Open();
+            if (!DBConnect.Open())
+            {
+                Response.StatusCode = 503;
+                Server.Transfer("/Error/503.aspx");
+                return;
+            }
             string id = Request.QueryString["Id"];
-            cmd = new SqlCommand("SELECT * FROM Artworks WHERE ArtistId = @ArtistId AND Id = @Id", conn);
+            if (string.IsNullOrEmpty(id))
+            {
+                Response.StatusCode = 404;
+                Server.Transfer("/Error/404.aspx");
+                return;
+            }
+            SqlCommand cmd = new SqlCommand("SELECT * FROM Artworks WHERE ArtistId = @ArtistId AND Id = @Id", DBConnect.conn);
             cmd.Parameters.AddWithValue("@ArtistId", Membership.GetUser().ProviderUserKey);
             cmd.Parameters.AddWithValue("@Id", id);
-            SqlDataReader reader = cmd.ExecuteReader();
-            if (!reader.HasRows)
+            SqlDataReader reader;
+            try
             {
-                throw new HttpException(404, "Not found");
+                reader = cmd.ExecuteReader();
+            } catch
+            {
+                Response.StatusCode = 500;
+                Server.Transfer("/Error/500.aspx");
+                return;
             }
-            reader.Read();
+            if (!reader.Read())
+            {
+                Response.StatusCode = 404;
+                Server.Transfer("/Error/404.aspx");
+                return;
+            }
             txtId.Text = "#" + reader["Id"].ToString();
             txtTitle.Text = reader["Title"].ToString();
             txtYear.Text = Convert.ToDateTime(reader["Year"].ToString()).Year.ToString();
-            txtPrice.Text = ((Decimal)reader["Price"]).ToString("F");
+            txtPrice.Text = Convert.ToDecimal(reader["Price"]).ToString("F");
             txtStockQty.Text = reader["StockQuantity"].ToString();
             txtDesc.Text = reader["Description"].ToString();
             cIsVisible.Checked = reader["isVisible"].ToString() == "1";
             reader.Close();
-            conn.Close();
+            DBConnect.conn.Close();
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -50,56 +69,118 @@ namespace ArtGallery.Artist.Artworks
 
         protected void saveBtn_Click(object sender, EventArgs e)
         {
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
-            SqlCommand cmd;
-            conn.Open();
+            if (!DBConnect.Open())
+            {
+                Response.StatusCode = 503;
+                Server.Transfer("/Error/503.aspx");
+                return;
+            }
+            string id = Request.QueryString["Id"];
+            if (string.IsNullOrEmpty(id))
+            {
+                Response.StatusCode = 404;
+                Server.Transfer("/Error/404.aspx");
+                return;
+            }
+
+            double price = 0;
+            int stock = 0;
+            try
+            {
+                price = Convert.ToDouble(txtPrice.Text);
+            }
+            catch (FormatException ex)
+            {
+                CustomValidator1.IsValid = false;
+                CustomValidator1.ErrorMessage = "Invalid format for price";
+                return;
+            }
+            try
+            {
+                stock = Convert.ToInt32(txtStockQty.Text);
+            }
+            catch (FormatException ex)
+            {
+                CustomValidator1.IsValid = false;
+                CustomValidator1.ErrorMessage = "Invalid format for stock quantity";
+                return;
+            }
+
             string title = txtTitle.Text;
             string year = txtYear.Text;
-            double price = Convert.ToDouble(txtPrice.Text);
-            int stock = Convert.ToInt32(txtStockQty.Text);
             string desc = txtDesc.Text;
             int isVisible = cIsVisible.Checked ? 1 : 0;
 
-            cmd = new SqlCommand("UPDATE Artworks SET Title=@title, Description=@desc, Year=@year, Price=@price, StockQuantity=@stockQty, isVisible=@isVisible WHERE Id=@id AND ArtistId=@artistId", conn);
+            SqlCommand cmd = new SqlCommand("UPDATE Artworks SET Title=@title, Description=@desc, Year=@year, Price=@price, StockQuantity=@stockQty, isVisible=@isVisible WHERE Id=@id AND ArtistId=@artistId", DBConnect.conn);
             cmd.Parameters.AddWithValue("@title", title);
             cmd.Parameters.AddWithValue("@desc", desc);
             cmd.Parameters.AddWithValue("@year", year);
             cmd.Parameters.AddWithValue("@price", price);
             cmd.Parameters.AddWithValue("@stockQty", stock);
             cmd.Parameters.AddWithValue("@isVisible", isVisible);
-            cmd.Parameters.AddWithValue("@id", Request.QueryString["Id"]);
+            cmd.Parameters.AddWithValue("@id", id);
             cmd.Parameters.AddWithValue("@artistId", Membership.GetUser().ProviderUserKey);
-            isUpdated = cmd.ExecuteNonQuery() > 0;
-            
-            if(FileUpload.HasFile) {
-                var StoragePath = Server.MapPath("~/Storage/");
-                if (!Directory.Exists(StoragePath))
-                {
-                    Directory.CreateDirectory(StoragePath);
-                }
-                var ArtworkPath = Server.MapPath("~/Storage/Artworks/");
-                if (!Directory.Exists(ArtworkPath))
-                {
-                    Directory.CreateDirectory(ArtworkPath);
-                }
-                FileUpload.SaveAs(Server.MapPath("~/Storage/Artworks/" + Request.QueryString["Id"] + System.IO.Path.GetExtension(FileUpload.FileName)));
-                cmd = new SqlCommand("UPDATE Artworks SET Image = @Image WHERE Id = @Id AND ArtistId = @ArtistId",conn);
-                cmd.Parameters.AddWithValue("@Image", Request.QueryString["Id"] + System.IO.Path.GetExtension(FileUpload.FileName));
-                cmd.Parameters.AddWithValue("@Id", Request.QueryString["Id"]);
-                cmd.Parameters.AddWithValue("@artistId", Membership.GetUser().ProviderUserKey);
-                cmd.ExecuteNonQuery();
+            try
+            {
+                isUpdated = cmd.ExecuteNonQuery() > 0;
+            } catch
+            {
+                CustomValidator1.IsValid = false;
+                CustomValidator1.ErrorMessage = "Fail to update artwork details";
+                isUpdated = false;
+                return;
             }
 
-            conn.Close();
+            if (FileUpload.HasFile)
+            {
+                string fileName = string.Empty;
+                try
+                {
+                    fileName = Server.MapPath("~/Storage/Artworks/" + id + Path.GetExtension(FileUpload.FileName));
+                }
+                catch
+                {
+                    var StoragePath = Server.MapPath("~/Storage/");
+                    if (!Directory.Exists(StoragePath))
+                    {
+                        Directory.CreateDirectory(StoragePath);
+                    }
+                    var ArtworkPath = Server.MapPath("~/Storage/Artworks/");
+                    if (!Directory.Exists(ArtworkPath))
+                    {
+                        Directory.CreateDirectory(ArtworkPath);
+                    }
+                    fileName = Server.MapPath("~/Storage/Artworks/" + id + Path.GetExtension(FileUpload.FileName));
+                }
+                finally
+                {
+                    FileUpload.SaveAs(fileName);
+                    cmd = new SqlCommand("UPDATE Artworks SET Image = @Image WHERE Id = @Id AND ArtistId = @ArtistId", DBConnect.conn);
+                    cmd.Parameters.AddWithValue("@Image", id + Path.GetExtension(FileUpload.FileName));
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.Parameters.AddWithValue("@artistId", Membership.GetUser().ProviderUserKey);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            DBConnect.conn.Close();
         }
 
         protected void CustomValidatorStockQty_ServerValidate(object source, ServerValidateEventArgs args)
         {
-            int stockQty = Convert.ToInt32(args.Value);
-            if (stockQty < 0)
+            try
+            {
+                int stockQty = Convert.ToInt32(args.Value);
+                if (stockQty < 0)
+                {
+                    args.IsValid = false;
+                    CustomValidatorStockQty.ErrorMessage = "Stock Quantity cannot be lesser than 0";
+                }
+            }
+            catch
             {
                 args.IsValid = false;
-                CustomValidatorStockQty.ErrorMessage = "Stock Quantity cannot be lesser than 0";
+                CustomValidatorStockQty.ErrorMessage = "Invalid format for Stock Quantity";
             }
         }
     }

@@ -28,25 +28,39 @@ namespace ArtGallery.Customer.Carts
         {
             if (!(isDeleted || !IsPostBack))
                 return;
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand("SELECT SUM([C].[Quantity]) AS TotalCount, SUM([A].[Price] * [C].[Quantity]) AS TotalAmount FROM[Artworks] A RIGHT JOIN[Carts] C ON[A].[Id] = [C].[ArtworkId], [aspnet_Users] U WHERE([A].[isVisible] = 1) AND CustomerId = @CustomerId AND[A].[ArtistId] = [U].[UserId]", conn); ;
+            DBConnect.Open();
+            SqlCommand cmd = new SqlCommand("SELECT SUM([C].[Quantity]) AS TotalCount, SUM([A].[Price] * [C].[Quantity]) AS TotalAmount FROM[Artworks] A RIGHT JOIN[Carts] C ON[A].[Id] = [C].[ArtworkId], [aspnet_Users] U WHERE([A].[isVisible] = 1) AND CustomerId = @CustomerId AND[A].[ArtistId] = [U].[UserId]", DBConnect.conn);
             cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
             SqlDataReader reader;
-            reader = cmd.ExecuteReader();
-            
-            if (reader.HasRows)
+            try
             {
-                reader.Read();
+                reader = cmd.ExecuteReader();
+            } catch
+            {
+                Response.StatusCode = 500;
+                Server.Transfer("/Error/500.aspx");
+                return;
+            }
+            
+            if (reader.Read())
+            {
                 checkoutAvailable = !Convert.IsDBNull(reader["TotalCount"]);
-                if (!Convert.IsDBNull(reader["TotalCount"])) {
+                if (checkoutAvailable) {
                     lblTotalCount.InnerText = reader["TotalCount"].ToString();
-                    lblTotalAmount.InnerText = "RM " + ((Decimal)reader["TotalAmount"]).ToString("F");
+                    try
+                    {
+                        lblTotalAmount.InnerText = "RM " + Convert.ToDecimal(reader["TotalAmount"]).ToString("F");
+                    } catch
+                    {
+                        Response.StatusCode = 500;
+                        Server.Transfer("/Error/500.aspx");
+                        return;
+                    }
                 }
 
             }
             reader.Close();
-            conn.Close();
+            DBConnect.conn.Close();
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -56,13 +70,21 @@ namespace ArtGallery.Customer.Carts
 
         protected void Repeater1_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand("DELETE FROM Carts WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", conn); ;
+            DBConnect.Open();
+            SqlCommand cmd = new SqlCommand("DELETE FROM Carts WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", DBConnect.conn);
             cmd.Parameters.AddWithValue("@ArtworkId", e.CommandArgument);
             cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
-            isDeleted = cmd.ExecuteNonQuery() > 0;
-            conn.Close();
+            try
+            {
+                isDeleted = cmd.ExecuteNonQuery() > 0;
+            }
+            catch
+            {
+                Response.StatusCode = 500;
+                Server.Transfer("/Error/500.aspx");
+                return;
+            }
+            DBConnect.conn.Close();
             Repeater1.DataBind();
         }
 

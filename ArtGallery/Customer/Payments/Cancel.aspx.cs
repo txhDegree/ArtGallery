@@ -14,13 +14,27 @@ namespace ArtGallery.Customer.Payments
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand("UPDATE Payments SET status = 'cancelled', UpdatedAt = @Now WHERE Id = @Id", conn);
+            string id = Request.QueryString["Id"];
+            if (string.IsNullOrEmpty(id))
+            {
+                Response.StatusCode = 404;
+                Server.Transfer("/Error/404.aspx");
+                return;
+            }
+            DBConnect.Open();
+            SqlCommand cmd = new SqlCommand("UPDATE Payments SET status = 'cancelled', UpdatedAt = @Now WHERE Id = @Id", DBConnect.conn);
             cmd.Parameters.AddWithValue("@Now", DateTime.Now);
-            cmd.Parameters.AddWithValue("@Id", Request.Params["Id"]);
-            cmd.ExecuteNonQuery();
-            conn.Close();
+            cmd.Parameters.AddWithValue("@Id", id);
+            try
+            {
+                cmd.ExecuteNonQuery();
+            } catch
+            {
+                Response.StatusCode = 500;
+                Server.Transfer("/Error/500.aspx");
+                return;
+            }
+            DBConnect.conn.Close();
         }
     }
 }

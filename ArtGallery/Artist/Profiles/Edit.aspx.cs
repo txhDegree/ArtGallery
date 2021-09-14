@@ -37,30 +37,39 @@ namespace ArtGallery.Artist.Profiles
 
         protected void saveBtn_Click(object sender, EventArgs e)
         {
-            string dob = txtDOB.Text;
-            string amtMe = txtAbtMe.Text;
             dynamic profile = ProfileBase.Create(Membership.GetUser().UserName);
             profile.Initialize(Membership.GetUser().UserName, true);
-            profile.DOB = dob;
-            profile.AboutMe = amtMe;
+            profile.DOB = txtDOB.Text;
+            profile.AboutMe = txtAbtMe.Text;
 
             if (FileUpload.HasFile)
             {
-                var StoragePath = Server.MapPath("~/Storage/");
-                if (!Directory.Exists(StoragePath))
+                string fileName = string.Empty;
+                try
                 {
-                    Directory.CreateDirectory(StoragePath);
+                    fileName = Server.MapPath("~/Storage/Artist/" + Membership.GetUser().ProviderUserKey + Path.GetExtension(FileUpload.FileName));
                 }
-                var ArtistPath = Server.MapPath("~/Storage/Artist/");
-                if (!Directory.Exists(ArtistPath))
+                catch
                 {
-                    Directory.CreateDirectory(ArtistPath);
+                    var StoragePath = Server.MapPath("~/Storage/");
+                    if (!Directory.Exists(StoragePath))
+                    {
+                        Directory.CreateDirectory(StoragePath);
+                    }
+                    var ArtistPath = Server.MapPath("~/Storage/Artist/");
+                    if (!Directory.Exists(ArtistPath))
+                    {
+                        Directory.CreateDirectory(ArtistPath);
+                    }
+                    fileName = Server.MapPath("~/Storage/Artworks/" + Membership.GetUser().ProviderUserKey + Path.GetExtension(FileUpload.FileName));
                 }
-                FileUpload.SaveAs(Server.MapPath("~/Storage/Artist/" + Membership.GetUser().UserName + System.IO.Path.GetExtension(FileUpload.FileName)));
-                profile.ProfilePic = Membership.GetUser().UserName + System.IO.Path.GetExtension(FileUpload.FileName);
+                finally
+                {
+                    FileUpload.SaveAs(fileName);
+                    profile.ProfilePic = Membership.GetUser().UserName + System.IO.Path.GetExtension(FileUpload.FileName);
+                }
             }
             profile.Save();
-
             isUpdated = true;
         }
     }

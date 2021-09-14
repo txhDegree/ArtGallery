@@ -20,8 +20,15 @@ namespace ArtGallery.Artworks
         protected Boolean isInWishlist = false;
         protected void Page_Init(object sender, EventArgs e)
         {
+            string artistId = Request.QueryString["Artist"];
+            if (string.IsNullOrEmpty(artistId))
+            {
+                Response.StatusCode = 404;
+                Server.Transfer("/Error/404.aspx");
+                return;
+            }
             MembershipUser user = Membership.GetUser();
-            MembershipUser artist = Membership.GetUser(Request.QueryString["Artist"]);
+            MembershipUser artist = Membership.GetUser(artistId);
             ArtworkSource.SelectParameters["CustomerId"].DefaultValue = user != null ? user.ProviderUserKey.ToString() : new Guid().ToString();
             ArtworkSource.SelectParameters["ArtistId"].DefaultValue = artist.ProviderUserKey.ToString();
             PagingSource.SelectParameters["CustomerId"].DefaultValue = ArtworkSource.SelectParameters["CustomerId"].DefaultValue;
@@ -32,10 +39,17 @@ namespace ArtGallery.Artworks
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            dynamic profile = ProfileBase.Create(Request.QueryString["Artist"]);
-            profile.Initialize(Request.QueryString["Artist"], true);
+            string artistId = Request.QueryString["Artist"];
+            if (string.IsNullOrEmpty(artistId))
+            {
+                Response.StatusCode = 404;
+                Server.Transfer("/Error/404.aspx");
+                return;
+            }
+            dynamic profile = ProfileBase.Create(artistId);
+            profile.Initialize(artistId, true);
             ProfileImg.Src = string.IsNullOrEmpty(profile.ProfilePic) ? "/public/img/profile.svg" : "/Storage/Artist/" + profile.ProfilePic;
-            ArtistName.InnerText = Request.QueryString["Artist"];
+            ArtistName.InnerText = artistId;
             abtMe.InnerText = string.IsNullOrEmpty(profile.AboutMe) ? "This artist haven't wrote anything yet..." : profile.AboutMe;
             dob.InnerText = profile.DOB;
 

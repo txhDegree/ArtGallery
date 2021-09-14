@@ -11,6 +11,7 @@
                         New artwork is created successfully!
                     </div>
                     <% } %>
+                    <asp:CustomValidator ID="CustomValidator1" runat="server" ErrorMessage=""></asp:CustomValidator>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>Artwork Title

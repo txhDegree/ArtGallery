@@ -29,48 +29,56 @@ namespace ArtGallery.Customer.Wishlists
 
         protected void Repeater1_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
-            conn.Open();
+            DBConnect.Open();
             SqlCommand cmd;
             SqlDataReader reader;
-            switch (e.CommandName) {
-                case "RemoveFromWishlist":
-                    cmd = new SqlCommand("SELECT * FROM Wishlists WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", conn);
-                    cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
-                    cmd.Parameters.AddWithValue("@ArtworkId", e.CommandArgument);
-                    reader = cmd.ExecuteReader();
-                    if (reader.HasRows) {
-                        reader.Close();
-                        cmd = new SqlCommand("DELETE FROM Wishlists WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", conn);
+            try
+            {
+
+                switch (e.CommandName) {
+                    case "RemoveFromWishlist":
+                        cmd = new SqlCommand("SELECT * FROM Wishlists WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", DBConnect.conn);
                         cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
                         cmd.Parameters.AddWithValue("@ArtworkId", e.CommandArgument);
-                        isRemovedFromWishlist = cmd.ExecuteNonQuery() > 0;
-                    } else {
-                        reader.Close();
-                        unableToRemovedFromWishlist = true;
-                    }
-                    break;
-                case "AddToCart":
-                    cmd = new SqlCommand("SELECT * FROM Carts WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", conn);
-                    cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
-                    cmd.Parameters.AddWithValue("@ArtworkId", e.CommandArgument);
-                    reader = cmd.ExecuteReader();
-                    if (reader.HasRows) {
-                        reader.Close();
-                        cmd = new SqlCommand("UPDATE Carts SET Quantity = Quantity + @Qty, AddedAt = @AddedAt WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", conn);
-                    } else {
-                        reader.Close();
-                        cmd = new SqlCommand("INSERT INTO Carts (CustomerId, ArtworkId, Quantity, AddedAt) VALUES (@CustomerId, @ArtworkId, @Qty, @AddedAt)", conn);
-                    }
-                    cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
-                    cmd.Parameters.AddWithValue("@ArtworkId", e.CommandArgument);
-                    cmd.Parameters.AddWithValue("@Qty", 1);
-                    cmd.Parameters.AddWithValue("@AddedAt", DateTime.Now);
+                        reader = cmd.ExecuteReader();
+                        if (reader.HasRows) {
+                            reader.Close();
+                            cmd = new SqlCommand("DELETE FROM Wishlists WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", DBConnect.conn);
+                            cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
+                            cmd.Parameters.AddWithValue("@ArtworkId", e.CommandArgument);
+                            isRemovedFromWishlist = cmd.ExecuteNonQuery() > 0;
+                        } else {
+                            reader.Close();
+                            unableToRemovedFromWishlist = true;
+                        }
+                        break;
+                    case "AddToCart":
+                        cmd = new SqlCommand("SELECT * FROM Carts WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", DBConnect.conn);
+                        cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
+                        cmd.Parameters.AddWithValue("@ArtworkId", e.CommandArgument);
+                        reader = cmd.ExecuteReader();
+                        if (reader.HasRows) {
+                            reader.Close();
+                            cmd = new SqlCommand("UPDATE Carts SET Quantity = Quantity + @Qty, AddedAt = @AddedAt WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", DBConnect.conn);
+                        } else {
+                            reader.Close();
+                            cmd = new SqlCommand("INSERT INTO Carts (CustomerId, ArtworkId, Quantity, AddedAt) VALUES (@CustomerId, @ArtworkId, @Qty, @AddedAt)", DBConnect.conn);
+                        }
+                        cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
+                        cmd.Parameters.AddWithValue("@ArtworkId", e.CommandArgument);
+                        cmd.Parameters.AddWithValue("@Qty", 1);
+                        cmd.Parameters.AddWithValue("@AddedAt", DateTime.Now);
 
-                    isAddedToCart = cmd.ExecuteNonQuery() > 0;
-                    break;
+                        isAddedToCart = cmd.ExecuteNonQuery() > 0;
+                        break;
+                }
+            } catch
+            {
+                Response.StatusCode = 500;
+                Server.Transfer("/Error/500.aspx");
+                return;
             }
-            conn.Close();
+            DBConnect.conn.Close();
             Repeater1.DataBind();
         }
 

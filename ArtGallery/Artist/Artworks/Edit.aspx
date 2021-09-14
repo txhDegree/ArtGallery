@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Artist/Navbar.master" AutoEventWireup="true" CodeBehind="Edit.aspx.cs" Inherits="ArtGallery.Artist.Artworks.Edit" %>
-<asp:Content ID="title" ContentPlaceHolderID="title" runat="server">Create New Artwork - Artist</asp:Content>
+<asp:Content ID="title" ContentPlaceHolderID="title" runat="server">Edit Artwork - Artist</asp:Content>
 <asp:Content ID="Content" ContentPlaceHolderID="Content" runat="server">
     <h1 class="h3 mb-4 text-gray-800">Edit My Artwork <asp:Label runat="server" ID="txtId" CssClass="badge badge-info"></asp:Label></h1>
     <div class="row">
@@ -11,6 +11,7 @@
                         This artwork is updated successfully!
                     </div>
                     <% } %>
+                    <asp:CustomValidator ID="CustomValidator1" runat="server" ErrorMessage=""></asp:CustomValidator>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>Artwork Title

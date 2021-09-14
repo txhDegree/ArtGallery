@@ -26,20 +26,35 @@ namespace ArtGallery.Artist.Artworks
             try
             {
                 price = Convert.ToDouble(txtPrice.Text);
-                stock = Convert.ToInt32(txtStockQty.Text);
             } catch (FormatException ex)
             {
+                CustomValidator1.IsValid = false;
+                CustomValidator1.ErrorMessage = "Invalid format for price";
                 return;
             }
+            try
+            {
+                stock = Convert.ToInt32(txtStockQty.Text);
+            }
+            catch (FormatException ex)
+            {
+                CustomValidator1.IsValid = false;
+                CustomValidator1.ErrorMessage = "Invalid format for stock quantity";
+                return;
+            }
+
             string title = txtTitle.Text;
             string year = txtYear.Text;
             string desc = txtDesc.Text;
             int isVisible = cIsVisible.Checked ? 1 : 0;
 
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
-            conn.Open();
+            if (!DBConnect.Open()) {
+                Response.StatusCode = 503;
+                Server.Transfer("/Error/503.aspx");
+                return;
+            }
 
-            SqlCommand cmd = new SqlCommand("INSERT INTO ARTWORKS (Title, Description, Year, Price, StockQuantity, isVisible, ArtistId) OUTPUT INSERTED.Id VALUES (@title, @desc, @year, @price, @stockQty, @isVisible, @artistId)", conn);
+            SqlCommand cmd = new SqlCommand("INSERT INTO ARTWORKS (Title, Description, Year, Price, StockQuantity, isVisible, ArtistId) OUTPUT INSERTED.Id VALUES (@title, @desc, @year, @price, @stockQty, @isVisible, @artistId)", DBConnect.conn);
             cmd.Parameters.AddWithValue("@title", title);
             cmd.Parameters.AddWithValue("@desc", desc);
             cmd.Parameters.AddWithValue("@year", year);
@@ -47,27 +62,50 @@ namespace ArtGallery.Artist.Artworks
             cmd.Parameters.AddWithValue("@stockQty", stock);
             cmd.Parameters.AddWithValue("@isVisible", isVisible);
             cmd.Parameters.AddWithValue("@artistId", Membership.GetUser().ProviderUserKey);
-            int id = (int)cmd.ExecuteScalar();
+            int id = 0;
+            try
+            {
+                id = Convert.ToInt32(cmd.ExecuteScalar());
+            } catch
+            {
+                isCreated = false;
+                CustomValidator1.IsValid = false;
+                CustomValidator1.ErrorMessage = "Unable to create artwork.";
+                DBConnect.conn.Close();
+                return;
+            }
+
             isCreated = id != 0;
 
             if (FileUpload.HasFile)
             {
-                var StoragePath = Server.MapPath("~/Storage/");
-                if (!Directory.Exists(StoragePath))
+                string fileName = string.Empty;
+                try
                 {
-                    Directory.CreateDirectory(StoragePath);
-                }
-                var ArtworkPath = Server.MapPath("~/Storage/Artworks/");
-                if (!Directory.Exists(ArtworkPath))
+                    fileName = Server.MapPath("~/Storage/Artworks/" + id + Path.GetExtension(FileUpload.FileName));
+                } catch
                 {
-                    Directory.CreateDirectory(ArtworkPath);
+                    var StoragePath = Server.MapPath("~/Storage/");
+                    if (!Directory.Exists(StoragePath))
+                    {
+                        Directory.CreateDirectory(StoragePath);
+                    }
+                    var ArtworkPath = Server.MapPath("~/Storage/Artworks/");
+                    if (!Directory.Exists(ArtworkPath))
+                    {
+                        Directory.CreateDirectory(ArtworkPath);
+                    }
+                    fileName = Server.MapPath("~/Storage/Artworks/" + id + Path.GetExtension(FileUpload.FileName));
                 }
-                FileUpload.SaveAs(Server.MapPath("~/Storage/Artworks/" + id + System.IO.Path.GetExtension(FileUpload.FileName)));
-                cmd = new SqlCommand("UPDATE Artworks SET Image = @Image WHERE Id = @Id AND ArtistId = @ArtistId", conn);
-                cmd.Parameters.AddWithValue("@Image", id + System.IO.Path.GetExtension(FileUpload.FileName));
-                cmd.Parameters.AddWithValue("@Id", id);
-                cmd.Parameters.AddWithValue("@artistId", Membership.GetUser().ProviderUserKey);
-                cmd.ExecuteNonQuery();
+                finally
+                {
+                    FileUpload.SaveAs(fileName);
+                    cmd = new SqlCommand("UPDATE Artworks SET Image = @Image WHERE Id = @Id AND ArtistId = @ArtistId", DBConnect.conn);
+                    cmd.Parameters.AddWithValue("@Image", id + Path.GetExtension(FileUpload.FileName));
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.Parameters.AddWithValue("@artistId", Membership.GetUser().ProviderUserKey);
+                    cmd.ExecuteNonQuery();
+                }
             }
 
             if (isCreated)
@@ -76,16 +114,23 @@ namespace ArtGallery.Artist.Artworks
                 txtTitle.Text = txtYear.Text = txtPrice.Text = txtStockQty.Text = txtDesc.Text = string.Empty;
             }
 
-            conn.Close();
+            DBConnect.conn.Close();
         }
 
         protected void CustomValidatorStockQty_ServerValidate(object source, ServerValidateEventArgs args)
         {
-            int stockQty = Convert.ToInt32(args.Value);
-            if(stockQty < 0)
+            try
+            {
+                int stockQty = Convert.ToInt32(args.Value);
+                if(stockQty < 0)
+                {
+                    args.IsValid = false;
+                    CustomValidatorStockQty.ErrorMessage = "Stock Quantity cannot be lesser than 0";
+                }
+            } catch
             {
                 args.IsValid = false;
-                CustomValidatorStockQty.ErrorMessage = "Stock Quantity cannot be lesser than 0";
+                CustomValidatorStockQty.ErrorMessage = "Invalid format for Stock Quantity";
             }
         }
     }

@@ -1,14 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Customer/Navbar.master" AutoEventWireup="true" CodeBehind="List.aspx.cs" Inherits="ArtGallery.Customer.Carts.List" %>
 <%@ Register Src="~/Controls/Pagination.ascx" TagPrefix="UC" TagName="Pagination" %>
-<asp:Content ID="style" ContentPlaceHolderID="VendorStyle" runat="server">
-    <style>
-        .text-overflow-hide {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-    </style>
-</asp:Content>
+<asp:Content ID="style" ContentPlaceHolderID="VendorStyle" runat="server"></asp:Content>
 <asp:Content ID="title" ContentPlaceHolderID="title" runat="server">My Cart - Customer</asp:Content>
 <asp:Content ID="Content" ContentPlaceHolderID="Content" runat="server">
     <h1 class="h3 mb-4 text-gray-800">My Carts</h1>
@@ -27,7 +19,7 @@
                 <ItemTemplate>
                     <div class="col-xl-3 col-lg-4 col-md-6 p-2">
                         <div class="card">
-                            <img class="card-img-top" src='<%# Convert.IsDBNull(Eval("Image")) ? "/public/img/image.svg" : "/Storage/Artworks/" + Eval("Image").ToString() %>'>
+                            <div class="card-img-top img-overflow" style="background-image: url(<%# Convert.IsDBNull(Eval("Image")) ? "/public/img/image.svg" : "/Storage/Artworks/" + Eval("Image").ToString() %>); height: 250px" ></div>
                             <div class="card-body">
                                 <h5 class="card-title"><a href='/Artworks/Details.aspx?Id=<%# Eval("Id") %>'><%# Eval("Title") %></a></h5>
                                 <p class="card-text"><span class="badge badge-primary"><%# Eval("UserName") %></span> <span class="badge badge-info"><%# Eval("StockQuantity") %> Stock Left</span></p>

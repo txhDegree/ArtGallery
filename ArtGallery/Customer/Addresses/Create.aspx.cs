@@ -19,12 +19,10 @@ namespace ArtGallery.Customer.Addresses
 
         protected void saveBtn_Click(object sender, EventArgs e)
         {
-            
+            DBConnect.Open();
+            DBConnect.conn.Open();
 
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
-            conn.Open();
-
-            SqlCommand cmd = new SqlCommand("INSERT INTO Addresses (Label, ReceiverName, ReceiverContact, Address, City, PostalCode, State, CustomerId) VALUES (@Label, @ReceiverName, @ReceiverContact, @Address, @City, @PostalCode, @State, @CustomerId)", conn);
+            SqlCommand cmd = new SqlCommand("INSERT INTO Addresses (Label, ReceiverName, ReceiverContact, Address, City, PostalCode, State, CustomerId) VALUES (@Label, @ReceiverName, @ReceiverContact, @Address, @City, @PostalCode, @State, @CustomerId)", DBConnect.conn);
             cmd.Parameters.AddWithValue("@Label", txtTitle.Text.Trim());
             cmd.Parameters.AddWithValue("@ReceiverName", txtName.Text.Trim());
             cmd.Parameters.AddWithValue("@ReceiverContact", txtContact.Text.Trim());
@@ -34,14 +32,23 @@ namespace ArtGallery.Customer.Addresses
             cmd.Parameters.AddWithValue("@State", ddlState.SelectedValue.Trim());
             cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
 
-            isCreated = cmd.ExecuteNonQuery() > 0;
+            try
+            {
+                isCreated = cmd.ExecuteNonQuery() > 0;
+            }
+            catch
+            {
+                CustomValidator1.IsValid = false;
+                CustomValidator1.ErrorMessage = "Fail to create address";
+                return;
+            }
 
             if (isCreated)
             {
                 txtTitle.Text = txtName.Text = txtContact.Text = txtAddress.Text = string.Empty;
             }
 
-            conn.Close();
+            DBConnect.conn.Close();
         }
     }
 }

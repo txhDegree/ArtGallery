@@ -22,13 +22,20 @@ namespace ArtGallery.Customer.Orders
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand("SELECT COUNT(isPaid) FROM Orders WHERE isPaid = 0 AND CustomerId = @CustomerId", conn);
+            DBConnect.Open();
+            SqlCommand cmd = new SqlCommand("SELECT COUNT(isPaid) FROM Orders WHERE isPaid = 0 AND CustomerId = @CustomerId", DBConnect.conn);
             cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
-            var result = cmd.ExecuteScalar();
-            paymentRequired = Convert.IsDBNull(result) ? false : (int)result > 0;
-            conn.Close();
+            try
+            {
+                var result = cmd.ExecuteScalar();
+                paymentRequired = Convert.IsDBNull(result) ? false : (int)result > 0;
+            } catch
+            {
+                Response.StatusCode = 500;
+                Server.Transfer("/Error/500.aspx");
+                return;
+            }
+            DBConnect.conn.Close();
         }
     }
 }

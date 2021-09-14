@@ -17,11 +17,19 @@ namespace ArtGallery.Customer.Payments
         protected string sessionId = "";
         protected void Page_Load(object sender, EventArgs e)
         {
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand("SELECT O.Id , O.AmountToPay*100 AS Amount FROM Orders O WHERE O.isPaid = 0 AND O.CustomerId = @CustomerId", conn); ;
+            DBConnect.Open();
+            SqlCommand cmd = new SqlCommand("SELECT O.Id , O.AmountToPay*100 AS Amount FROM Orders O WHERE O.isPaid = 0 AND O.CustomerId = @CustomerId", DBConnect.conn);
             cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
-            SqlDataReader reader = cmd.ExecuteReader();
+            SqlDataReader reader;
+            try
+            {
+                reader = cmd.ExecuteReader();
+            } catch
+            {
+                Response.StatusCode = 500;
+                Server.Transfer("/Error/500.aspx");
+                return;
+            }
             List<SessionLineItemOptions> items = new List<SessionLineItemOptions>();
             int total = 0;
             if (reader.HasRows)
@@ -40,19 +48,30 @@ namespace ArtGallery.Customer.Payments
             reader.Close();
 
             // create new payment record in db
-            cmd = new SqlCommand("INSERT INTO Payments (Status, Amount, CreatedAt, UpdatedAt) OUTPUT INSERTED.ID VALUES ('pending', @Amount, @cNow, @uNow)", conn);
-            cmd.Parameters.AddWithValue("@Amount", (double)total / 100);
+            cmd = new SqlCommand("INSERT INTO Payments (Status, Amount, CreatedAt, UpdatedAt) OUTPUT INSERTED.ID VALUES ('pending', @Amount, @cNow, @uNow)", DBConnect.conn);
+            cmd.Parameters.AddWithValue("@Amount", Convert.ToDouble(total / 100));
             cmd.Parameters.AddWithValue("@cNow", DateTime.Now);
             cmd.Parameters.AddWithValue("@uNow", DateTime.Now);
-            int paymentId = (int)cmd.ExecuteScalar();
+            
+            int paymentId = 0;
+            try
+            {
+                paymentId = (int)cmd.ExecuteScalar();
+            }
+            catch
+            {
+                Response.StatusCode = 500;
+                Server.Transfer("/Error/500.aspx");
+                return;
+            }
 
-            cmd = new SqlCommand("INSERT INTO OrderPayments (PaymentId, OrderId) (SELECT @PaymentId, Id FROM Orders WHERE isPaid = 0 AND CustomerId = @CustomerId);", conn);
+            cmd = new SqlCommand("INSERT INTO OrderPayments (PaymentId, OrderId) (SELECT @PaymentId, Id FROM Orders WHERE isPaid = 0 AND CustomerId = @CustomerId);", DBConnect.conn);
             cmd.Parameters.AddWithValue("@PaymentId", paymentId);
             cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
             cmd.ExecuteNonQuery();
-            conn.Close();
+            DBConnect.conn.Close();
 
-            StripeConfiguration.ApiKey = "sk_test_51JM6faCafuyPLxsgbrqltPfR5Qs0i6kRkROjFs7SbI8OmokeCG5ewUePPuQlcW8DUqtoRWVtZFV5No6cqsfqGzDH00A1Rwpr2n";
+            StripeConfiguration.ApiKey = ConfigurationManager.AppSettings["StripeApiKey"].ToString();
 
             var options = new SessionCreateOptions
             {

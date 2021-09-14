@@ -97,6 +97,8 @@
     <Content Include="Customer\ResetPassword.aspx" />
     <Content Include="Email\Shipping.html" />
     <Content Include="Email\Payment.html" />
+    <Content Include="Error\500.aspx" />
+    <Content Include="Error\503.aspx" />
     <Content Include="Error\404.aspx" />
     <Content Include="App_Data\ArtDB.mdf" />
     <Content Include="App_Data\ArtDB_log.ldf">
@@ -1841,7 +1843,22 @@
     <Compile Include="Customer\ResetPassword.aspx.designer.cs">
       <DependentUpon>ResetPassword.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DBConnect.cs" />
     <Compile Include="Email\Mail.cs" />
+    <Compile Include="Error\500.aspx.cs">
+      <DependentUpon>500.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error\500.aspx.designer.cs">
+      <DependentUpon>500.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Error\503.aspx.cs">
+      <DependentUpon>503.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error\503.aspx.designer.cs">
+      <DependentUpon>503.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Error\404.aspx.cs">
       <DependentUpon>404.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

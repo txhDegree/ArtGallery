@@ -73,13 +73,12 @@ namespace ArtGallery.Artist.Orders
             }
 
             MembershipUser user = Membership.GetUser();
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand("SELECT DAY([Date]) as datestr, SUM(TotalAmount) as subtotal FROM Orders WHERE ArtistId = @ArtistId AND MONTH([Date]) = @Month AND YEAR([Date]) = @Year GROUP BY DAY([Date])", conn);
+            DBConnect.Open();
+            SqlCommand cmd = new SqlCommand("SELECT DAY([Date]) as datestr, SUM(TotalAmount) as subtotal FROM Orders WHERE ArtistId = @ArtistId AND MONTH([Date]) = @Month AND YEAR([Date]) = @Year GROUP BY DAY([Date])", DBConnect.conn);
             cmd.Parameters.AddWithValue("@ArtistId", user.ProviderUserKey);
             cmd.Parameters.AddWithValue("@Month", month);
             cmd.Parameters.AddWithValue("@Year", year);
-            SqlDataReader reader = cmd.ExecuteReader(); ;
+            SqlDataReader reader = cmd.ExecuteReader();
 
             for(int i = 1; i <= MaxDay; i++)
             {
@@ -97,7 +96,7 @@ namespace ArtGallery.Artist.Orders
                 }
                 reader.Close();
             }
-            conn.Close();
+            DBConnect.conn.Close();
         }
 
         protected void Page_Load(object sender, EventArgs e)

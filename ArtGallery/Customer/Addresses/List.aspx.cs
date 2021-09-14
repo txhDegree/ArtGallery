@@ -27,18 +27,26 @@ namespace ArtGallery.Customer.Addresses
 
         protected void Repeater1_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
-            conn.Open();
+            DBConnect.Open();
             SqlCommand cmd;
             switch (e.CommandName) {
                 case "RemoveAddress":
-                    cmd = new SqlCommand("DELETE FROM Addresses WHERE CustomerId = @CustomerId AND Id = @AddressId", conn);
+                    cmd = new SqlCommand("DELETE FROM Addresses WHERE CustomerId = @CustomerId AND Id = @AddressId", DBConnect.conn);
                     cmd.Parameters.AddWithValue("@CustomerId", Membership.GetUser().ProviderUserKey);
                     cmd.Parameters.AddWithValue("@AddressId", e.CommandArgument);
-                    isDeleted = cmd.ExecuteNonQuery() > 0;
+                    try
+                    {
+                        isDeleted = cmd.ExecuteNonQuery() > 0;
+                    }
+                    catch
+                    {
+                        Response.StatusCode = 500;
+                        Server.Transfer("/Error/500.aspx");
+                        return;
+                    }
                     break;
             }
-            conn.Close();
+            DBConnect.conn.Close();
             Repeater1.DataBind();
         }
 
