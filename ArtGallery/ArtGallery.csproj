@@ -88,9 +88,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Artist\Profiles\Edit.aspx" />
+    <Content Include="Artist\ResetPassword.aspx" />
     <Content Include="Artworks\Artist.aspx" />
     <Content Include="Controls\Pagination.ascx" />
     <Content Include="Customer\Dashboard.aspx" />
+    <Content Include="Customer\ResetPassword.aspx" />
     <Content Include="Email\Shipping.html" />
     <Content Include="Email\Payment.html" />
     <Content Include="Error\404.aspx" />
@@ -119,6 +121,7 @@
     <Content Include="Customer\register.aspx" />
     <Content Include="Customer\Wishlists\List.aspx" />
     <Content Include="index.aspx" />
+    <Content Include="PasswordRecover.aspx" />
     <Content Include="public\index.css" />
     <Content Include="login.aspx" />
     <Content Include="Artist\register.aspx" />
@@ -1787,6 +1790,13 @@
     <Compile Include="Artist\Profiles\Edit.aspx.designer.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Artist\ResetPassword.aspx.cs">
+      <DependentUpon>ResetPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Artist\ResetPassword.aspx.designer.cs">
+      <DependentUpon>ResetPassword.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Artworks\Artist.aspx.cs">
       <DependentUpon>Artist.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1807,6 +1817,13 @@
     </Compile>
     <Compile Include="Customer\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Customer\ResetPassword.aspx.cs">
+      <DependentUpon>ResetPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Customer\ResetPassword.aspx.designer.cs">
+      <DependentUpon>ResetPassword.aspx</DependentUpon>
     </Compile>
     <Compile Include="Email\Mail.cs" />
     <Compile Include="Error\404.aspx.cs">
@@ -2004,6 +2021,13 @@
     </Compile>
     <Compile Include="Artworks\Navbar.master.designer.cs">
       <DependentUpon>Navbar.master</DependentUpon>
+    </Compile>
+    <Compile Include="PasswordRecover.aspx.cs">
+      <DependentUpon>PasswordRecover.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PasswordRecover.aspx.designer.cs">
+      <DependentUpon>PasswordRecover.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

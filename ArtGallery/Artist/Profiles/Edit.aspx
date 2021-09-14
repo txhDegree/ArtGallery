@@ -3,7 +3,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="title" runat="server">Edit Profile</asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Content" runat="server">
-    <h1 class="h3 mb-4 text-gray-800">Create New Artwork</h1>
+    <h1 class="h3 mb-4 text-gray-800">Edit Profile</h1>
     <div class="row">
         <div class="col-md-6 mx-auto">
             <div class="card">
@@ -17,7 +17,7 @@
                         <div class="form-group col-12">
                             <label>
                                 Date Of Birth
-                                <asp:RangeValidator ID="RangeValidatorDOB" runat="server" ErrorMessage="Your Date Of Birth is invalid" Text="*" Type="Date" ControlToValidate="txtDOB" CssClass="text-danger" MinimumValue="1/1/1900"></asp:RangeValidator>
+                                <asp:RangeValidator ID="RangeValidatorDOB" runat="server" ErrorMessage="Your Date Of Birth is invalid" Text="*" Type="Date" ControlToValidate="txtDOB" CssClass="text-danger" MinimumValue="1900/1/1"></asp:RangeValidator>
                             </label>
                             <asp:TextBox runat="server" CssClass="form-control" placeholder="Date Of Birth" ID="txtDOB" MaxLength="10" TextMode="Date"></asp:TextBox>
                         </div>

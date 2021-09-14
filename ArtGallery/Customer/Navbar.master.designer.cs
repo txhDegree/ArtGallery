@@ -33,15 +33,6 @@ namespace ArtGallery.Customer
         protected global::System.Web.UI.WebControls.ContentPlaceHolder title;
 
         /// <summary>
-        /// Logout control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton Logout;
-
-        /// <summary>
         /// username control.
         /// </summary>
         /// <remarks>
@@ -49,6 +40,15 @@ namespace ArtGallery.Customer
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl username;
+
+        /// <summary>
+        /// Logout control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton Logout;
 
         /// <summary>
         /// Content control.

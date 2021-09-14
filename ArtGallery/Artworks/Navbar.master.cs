@@ -11,14 +11,14 @@ namespace ArtGallery
     public partial class Navbar : System.Web.UI.MasterPage
     {
         protected Boolean isLoggedIn = false;
+        protected string role = string.Empty; 
         protected void Page_Load(object sender, EventArgs e)
         {
             MembershipUser user = Membership.GetUser();
             if(user != null)
             {
-                if(Roles.GetRolesForUser(user.UserName)[0] == "Customer") {
-                    isLoggedIn = true;
-                }
+                isLoggedIn = true;
+                role = Roles.GetRolesForUser(user.UserName)[0];
             }
         }
 

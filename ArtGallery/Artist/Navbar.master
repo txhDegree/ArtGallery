@@ -199,6 +199,10 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
+                                <a class="dropdown-item" href="/Artist/ResetPassword.aspx">
+                                    <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Reset Password
+                                </a>
                                 <div class="dropdown-divider"></div>
                                 <asp:LinkButton runat="server" CssClass="dropdown-item text-danger" ID="Logout" OnClick="Logout_Click">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>

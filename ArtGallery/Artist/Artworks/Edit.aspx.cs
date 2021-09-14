@@ -45,6 +45,7 @@ namespace ArtGallery.Artist.Artworks
         protected void Page_Load(object sender, EventArgs e)
         {
             this.PreRender += Page_PreRender;
+            RangeValidatorYear.MaximumValue = DateTime.Now.Year.ToString();
         }
 
         protected void saveBtn_Click(object sender, EventArgs e)

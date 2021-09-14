@@ -20,27 +20,56 @@
                         <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
                     </ul>
                 </div>
-                <% if (isLoggedIn) { %>
-                    <div class="ml-auto">
+                <% if(isLoggedIn) { 
+                    switch(role){
+                        case "Customer":
+                    %>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="/Customer/Dashboard.aspx">Customer Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/Customer/Carts/List.aspx">My Cart</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/Customer/Orders/List.aspx">My Order</a></li>
+                    </ul>
+                </div>
+                <div class="ml-auto">
+                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><asp:LinkButton ID="logoutBtn" CssClass="nav-link" runat="server" OnClick="logoutBtn_Click">Logout</asp:LinkButton></li>
+                    </ul>
+                </div>
+                <% 
+                        break;
+                        case "Artist":
+                %>
+                    <div class="collapse navbar-collapse">
                         <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                            <li class="nav-item"><a class="nav-link" href="/Customer/Dashboard.aspx">My Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/Artist/Artworks/List.aspx">My Artworks</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/Artist/Orders/List.aspx">My Order</a></li>
                         </ul>
                     </div>
-                <% } else { %>
                     <div class="ml-auto">
                         <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                            <li class="nav-item"><a class="nav-link" href="/login.aspx">Login</a></li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Sign Up
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="/Customer/register.aspx">Customer</a>
-                                    <a class="dropdown-item" href="/Artist/register.aspx">Artist</a>
-                                </div>
-                            </li>
+                            <li class="nav-item"><asp:LinkButton ID="LinkButton1" CssClass="nav-link" runat="server" OnClick="logoutBtn_Click">Logout</asp:LinkButton></li>
                         </ul>
                     </div>
+                <% 
+                        break;
+                    }
+                %>
+                <%  } else { %>
+                <div class="ml-auto">
+                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="/login.aspx">Login</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Sign Up
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton2">
+                                <a class="dropdown-item" href="/Customer/register.aspx">Customer</a>
+                                <a class="dropdown-item" href="/Artist/register.aspx">Artist</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
                 <% } %>
             </div>
         </nav>

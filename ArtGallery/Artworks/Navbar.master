@@ -19,7 +19,10 @@
                     <li class="nav-item"><a class="nav-link" href="/Artworks/List.aspx">Artworks Gallery</a></li>
                 </ul>
             </div>
-            <% if(isLoggedIn) { %>
+            <% if(isLoggedIn) { 
+                switch(role){
+                    case "Customer":
+                %>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
                     <li class="nav-item"><a class="nav-link" href="/Customer/Dashboard.aspx">Customer Dashboard</a></li>
@@ -32,7 +35,26 @@
                     <li class="nav-item"><asp:LinkButton ID="logoutBtn" CssClass="nav-link" runat="server" OnClick="logoutBtn_Click">Logout</asp:LinkButton></li>
                 </ul>
             </div>
-            <% } else { %>
+            <% 
+                    break;
+                    case "Artist":
+            %>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="/Artist/Artworks/List.aspx">My Artworks</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/Artist/Orders/List.aspx">My Order</a></li>
+                    </ul>
+                </div>
+                <div class="ml-auto">
+                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><asp:LinkButton ID="LinkButton1" CssClass="nav-link" runat="server" OnClick="logoutBtn_Click">Logout</asp:LinkButton></li>
+                    </ul>
+                </div>
+            <% 
+                    break;
+                }
+            %>
+            <%  } else { %>
             <div class="ml-auto">
                 <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
                     <li class="nav-item"><a class="nav-link" href="/login.aspx">Login</a></li>
