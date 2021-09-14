@@ -38,6 +38,62 @@ namespace ArtGallery.Artworks
             ArtistName.InnerText = Request.QueryString["Artist"];
             abtMe.InnerText = string.IsNullOrEmpty(profile.AboutMe) ? "This artist haven't wrote anything yet..." : profile.AboutMe;
             dob.InnerText = profile.DOB;
+
+            ArtworkList.Reload();
+        }
+
+        protected void CustomValidator1_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            string fromStr = price_from.Text, toStr = price_to.Text;
+            double from = 0, to = 0;
+            if (!string.IsNullOrEmpty(fromStr))
+            {
+                try
+                {
+                    from = Convert.ToDouble(fromStr);
+                }
+                catch (FormatException ex)
+                {
+                    CustomValidator1.IsValid = false;
+                    CustomValidator1.ErrorMessage = "Invalid Price Format at 'Price From'";
+                    return;
+                }
+                if (from < 0)
+                {
+                    CustomValidator1.IsValid = false;
+                    CustomValidator1.ErrorMessage = "'Price From' cannot be a negative number";
+                    return;
+                }
+            }
+            if (!string.IsNullOrEmpty(toStr))
+            {
+                try
+                {
+                    to = Convert.ToDouble(toStr);
+                }
+                catch (FormatException ex)
+                {
+                    CustomValidator1.IsValid = false;
+                    CustomValidator1.ErrorMessage = "Invalid Price Format at 'Price To'";
+                    return;
+                }
+                if (to < 0)
+                {
+                    CustomValidator1.IsValid = false;
+                    CustomValidator1.ErrorMessage = "'Price To' cannot be a negative number";
+                    return;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(fromStr) && !string.IsNullOrEmpty(toStr))
+            {
+                if (from > to)
+                {
+                    CustomValidator1.IsValid = false;
+                    CustomValidator1.ErrorMessage = "'Price From' cannot be greater than 'Price To'";
+                    return;
+                }
+            }
         }
     }
 }

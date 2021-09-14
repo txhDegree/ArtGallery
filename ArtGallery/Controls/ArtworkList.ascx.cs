@@ -125,12 +125,32 @@ namespace ArtGallery.Controls
 
         protected void Repeater1_PreRender(object sender, EventArgs e)
         {
-            if (Repeater1.Items.Count < 1)
+            System.Data.DataView dataView = (System.Data.DataView)PagingSource.Select(DataSourceSelectArguments.Empty);
+            if ((dataView == null ? 0 : dataView.Count) < 1)
             {
                 NoRecords.Visible = true;
                 Repeater1.Visible = false;
-                Pagination.Visible = false;
+            } else
+            {
+                NoRecords.Visible = false;
+                Repeater1.Visible = true;
             }
+        }
+
+        public void Reload() {
+            Repeater1.DataBind();
+            System.Data.DataView dataView = (System.Data.DataView)PagingSource.Select(DataSourceSelectArguments.Empty);
+            if ((dataView == null ? 0 : dataView.Count) < 1)
+            {
+                NoRecords.Visible = true;
+                Repeater1.Visible = false;
+            } else
+            {
+                NoRecords.Visible = false;
+                Repeater1.Visible = true;
+            }
+            Pagination.initialize(AllSource, PagingSource, 12);
+
         }
     }
 }

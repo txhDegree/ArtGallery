@@ -32,8 +32,7 @@ namespace ArtGallery.Controls
             TotalPage = Convert.ToInt32(Math.Ceiling((double)TotalRecord / RecordPerPage));
 
             // If TotalPage is less than equal 1, then no need to display
-            if (TotalPage <= 1)
-                Visible = false;
+            Visible = !(TotalPage <= 1);
 
             // Find CurrentPage from QueryString, if current page is more than total page, set to 1
             CurrentPage = Request.QueryString["page"] == null ? 1 : Convert.ToInt32(Request.QueryString["page"]);
