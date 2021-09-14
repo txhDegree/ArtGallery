@@ -24,9 +24,9 @@
                 <ItemTemplate>
                     <div class="col-xl-3 col-lg-4 col-md-6 p-2">
                         <div class="card">
-                            <img class="card-img-top" src='<%# Convert.IsDBNull(Eval("Image")) ? "/public/img/image.svg" : "/Storage/Artworks/" + Eval("Image").ToString() %>' >
+                            <div class="card-img-top img-overflow" style="background-image: url(<%# Convert.IsDBNull(Eval("Image")) ? "/public/img/image.svg" : "/Storage/Artworks/" + Eval("Image").ToString() %>); height: 250px" ></div>
                             <div class="card-body">
-                                <h5 class="card-title"><%# Eval("Title") %></h5>
+                                <h5 class="card-title text-overflow-hide"><%# Eval("Title") %></h5>
                                 <p class="card-text text-overflow-hide"><%# Eval("Description") %></p>
                                 <p class="card-text"><span class="text-success font-weight-bold">RM <%# ((Decimal)Eval("Price")).ToString("F") %></span></p>
                                 <p class="card-text"><span class="badge badge-info"><%# Eval("StockQuantity") %> Stock Left</span></p>

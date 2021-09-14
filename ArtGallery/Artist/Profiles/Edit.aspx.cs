@@ -48,6 +48,7 @@ namespace ArtGallery.Artist.Profiles
                 try
                 {
                     fileName = Server.MapPath("~/Storage/Artist/" + Membership.GetUser().ProviderUserKey + Path.GetExtension(FileUpload.FileName));
+                    FileUpload.SaveAs(fileName);
                 }
                 catch
                 {
@@ -61,11 +62,11 @@ namespace ArtGallery.Artist.Profiles
                     {
                         Directory.CreateDirectory(ArtistPath);
                     }
-                    fileName = Server.MapPath("~/Storage/Artworks/" + Membership.GetUser().ProviderUserKey + Path.GetExtension(FileUpload.FileName));
+                    fileName = Server.MapPath("~/Storage/Artist/" + Membership.GetUser().ProviderUserKey + Path.GetExtension(FileUpload.FileName));
+                    FileUpload.SaveAs(fileName);
                 }
                 finally
                 {
-                    FileUpload.SaveAs(fileName);
                     profile.ProfilePic = Membership.GetUser().UserName + System.IO.Path.GetExtension(FileUpload.FileName);
                 }
             }

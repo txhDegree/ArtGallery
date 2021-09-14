@@ -123,6 +123,7 @@ namespace ArtGallery.Artist.Artworks
             try
             {
                 isUpdated = cmd.ExecuteNonQuery() > 0;
+                RangeValidatorYear.IsValid = true;
             } catch
             {
                 CustomValidator1.IsValid = false;
@@ -137,6 +138,7 @@ namespace ArtGallery.Artist.Artworks
                 try
                 {
                     fileName = Server.MapPath("~/Storage/Artworks/" + id + Path.GetExtension(FileUpload.FileName));
+                    FileUpload.SaveAs(fileName);
                 }
                 catch
                 {
@@ -151,10 +153,10 @@ namespace ArtGallery.Artist.Artworks
                         Directory.CreateDirectory(ArtworkPath);
                     }
                     fileName = Server.MapPath("~/Storage/Artworks/" + id + Path.GetExtension(FileUpload.FileName));
+                    FileUpload.SaveAs(fileName);
                 }
                 finally
                 {
-                    FileUpload.SaveAs(fileName);
                     cmd = new SqlCommand("UPDATE Artworks SET Image = @Image WHERE Id = @Id AND ArtistId = @ArtistId", DBConnect.conn);
                     cmd.Parameters.AddWithValue("@Image", id + Path.GetExtension(FileUpload.FileName));
                     cmd.Parameters.AddWithValue("@Id", id);

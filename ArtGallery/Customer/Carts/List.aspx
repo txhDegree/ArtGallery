@@ -21,7 +21,7 @@
                         <div class="card">
                             <div class="card-img-top img-overflow" style="background-image: url(<%# Convert.IsDBNull(Eval("Image")) ? "/public/img/image.svg" : "/Storage/Artworks/" + Eval("Image").ToString() %>); height: 250px" ></div>
                             <div class="card-body">
-                                <h5 class="card-title"><a href='/Artworks/Details.aspx?Id=<%# Eval("Id") %>'><%# Eval("Title") %></a></h5>
+                                <h5 class="card-title text-overflow-hide"><a href='/Artworks/Details.aspx?Id=<%# Eval("Id") %>'><%# Eval("Title") %></a></h5>
                                 <p class="card-text"><span class="badge badge-primary"><%# Eval("UserName") %></span> <span class="badge badge-info"><%# Eval("StockQuantity") %> Stock Left</span></p>
                                 <p class="card-text">RM <%# ((Decimal)Eval("Price")).ToString("F") %> × <%# Eval("Quantity") %></p>
                                 <p class="card-text">Subtotal: <span class="text-success font-weight-bold">RM <%# ((Decimal)Eval("Subtotal")).ToString("F") %></span></p>
