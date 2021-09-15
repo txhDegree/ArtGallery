@@ -67,7 +67,7 @@ namespace ArtGallery.Artist.Profiles
                 }
                 finally
                 {
-                    profile.ProfilePic = Membership.GetUser().UserName + System.IO.Path.GetExtension(FileUpload.FileName);
+                    profile.ProfilePic = Membership.GetUser().ProviderUserKey + System.IO.Path.GetExtension(FileUpload.FileName);
                 }
             }
             profile.Save();
