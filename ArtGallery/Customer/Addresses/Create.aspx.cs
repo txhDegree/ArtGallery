@@ -20,7 +20,6 @@ namespace ArtGallery.Customer.Addresses
         protected void saveBtn_Click(object sender, EventArgs e)
         {
             DBConnect.Open();
-            DBConnect.conn.Open();
 
             SqlCommand cmd = new SqlCommand("INSERT INTO Addresses (Label, ReceiverName, ReceiverContact, Address, City, PostalCode, State, CustomerId) VALUES (@Label, @ReceiverName, @ReceiverContact, @Address, @City, @PostalCode, @State, @CustomerId)", DBConnect.conn);
             cmd.Parameters.AddWithValue("@Label", txtTitle.Text.Trim());
