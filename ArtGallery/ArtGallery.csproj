@@ -125,6 +125,7 @@
     <Content Include="Customer\register.aspx" />
     <Content Include="Customer\Wishlists\List.aspx" />
     <Content Include="index.aspx" />
+    <Content Include="logout.aspx" />
     <Content Include="PasswordRecover.aspx" />
     <Content Include="public\index.css" />
     <Content Include="login.aspx" />
@@ -2019,6 +2020,13 @@
     </Compile>
     <Compile Include="index.aspx.designer.cs">
       <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="logout.aspx.cs">
+      <DependentUpon>logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="logout.aspx.designer.cs">
+      <DependentUpon>logout.aspx</DependentUpon>
     </Compile>
     <Compile Include="main.Master.cs">
       <DependentUpon>main.Master</DependentUpon>

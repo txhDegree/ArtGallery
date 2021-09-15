@@ -103,10 +103,10 @@
                                     Reset Password
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <asp:LinkButton runat="server" CssClass="dropdown-item text-danger" ID="Logout" OnClick="Logout_Click">
+                                <a class="dropdown-item text-danger" href="/logout.aspx">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>
                                     Logout
-                                </asp:LinkButton>  
+                                </a>  
                             </div>
                         </li>
 

@@ -6,16 +6,15 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace ArtGallery.Customer
+namespace ArtGallery
 {
-    public partial class Navbar : System.Web.UI.MasterPage
+    public partial class logout : System.Web.UI.Page
     {
-        protected void Page_Init(object sender, EventArgs e) {
-            username.InnerText = Membership.GetUser().UserName;
-        }
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Session.Abandon();
+            FormsAuthentication.SignOut();
+            Response.Redirect("/index.aspx");
         }
     }
 }
