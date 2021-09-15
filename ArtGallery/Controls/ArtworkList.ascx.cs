@@ -39,21 +39,20 @@ namespace ArtGallery.Controls
                 FormsAuthentication.RedirectToLoginPage();
                 return;
             }
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ArtDBConnStr"].ConnectionString);
-            conn.Open();
+            DBConnect.Open();
             SqlCommand cmd;
             SqlDataReader reader;
             switch (e.CommandName)
             {
                 case "RemoveFromWishlist":
-                    cmd = new SqlCommand("SELECT * FROM Wishlists WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", conn);
+                    cmd = new SqlCommand("SELECT * FROM Wishlists WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", DBConnect.conn);
                     cmd.Parameters.AddWithValue("@CustomerId", user.ProviderUserKey);
                     cmd.Parameters.AddWithValue("@ArtworkId", e.CommandArgument);
                     reader = cmd.ExecuteReader();
                     if (reader.HasRows)
                     {
                         reader.Close();
-                        cmd = new SqlCommand("DELETE FROM Wishlists WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", conn);
+                        cmd = new SqlCommand("DELETE FROM Wishlists WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", DBConnect.conn);
                         cmd.Parameters.AddWithValue("@CustomerId", user.ProviderUserKey);
                         cmd.Parameters.AddWithValue("@ArtworkId", e.CommandArgument);
                         isRemovedFromWishlist = cmd.ExecuteNonQuery() > 0;
@@ -65,7 +64,7 @@ namespace ArtGallery.Controls
                     }
                     break;
                 case "AddToWishlist":
-                    cmd = new SqlCommand("SELECT * FROM Wishlists WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", conn);
+                    cmd = new SqlCommand("SELECT * FROM Wishlists WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", DBConnect.conn);
                     cmd.Parameters.AddWithValue("@CustomerId", user.ProviderUserKey);
                     cmd.Parameters.AddWithValue("@ArtworkId", e.CommandArgument);
                     reader = cmd.ExecuteReader();
@@ -77,7 +76,7 @@ namespace ArtGallery.Controls
                     else
                     {
                         reader.Close();
-                        cmd = new SqlCommand("INSERT INTO Wishlists (CustomerId, ArtworkId, AddedAt) VALUES (@CustomerId, @ArtworkId, @AddedAt)", conn);
+                        cmd = new SqlCommand("INSERT INTO Wishlists (CustomerId, ArtworkId, AddedAt) VALUES (@CustomerId, @ArtworkId, @AddedAt)", DBConnect.conn);
                         cmd.Parameters.AddWithValue("@CustomerId", user.ProviderUserKey);
                         cmd.Parameters.AddWithValue("@ArtworkId", e.CommandArgument);
                         cmd.Parameters.AddWithValue("@AddedAt", DateTime.Now);
@@ -85,31 +84,31 @@ namespace ArtGallery.Controls
                     }
                     break;
                 case "AddToCart":
-                    cmd = new SqlCommand("SELECT * FROM Carts WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", conn);
+                    cmd = new SqlCommand("SELECT * FROM Carts WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", DBConnect.conn);
                     cmd.Parameters.AddWithValue("@CustomerId", user.ProviderUserKey);
                     cmd.Parameters.AddWithValue("@ArtworkId", e.CommandArgument);
                     reader = cmd.ExecuteReader();
-                    if (reader.HasRows)
+                    if (reader.Read())
                     {
                         int total = Convert.ToInt32(reader["Quantity"]) + 1;
                         reader.Close();
-                        cmd = new SqlCommand("SELECT StockQuantity FROM Artworks WHERE Id = @ArtworkId", conn);
-                        cmd.Parameters.AddWithValue("@ArtworkId", Request.Params["Id"]);
+                        cmd = new SqlCommand("SELECT StockQuantity FROM Artworks WHERE Id = @ArtworkId", DBConnect.conn);
+                        cmd.Parameters.AddWithValue("@ArtworkId", e.CommandArgument);
                         int stockQty = Convert.ToInt32(cmd.ExecuteScalar());
 
                         if (stockQty < total)
                         {
                             maxOfCart = true;
-                            conn.Close();
+                            DBConnect.conn.Close();
                             return;
                         }
 
-                        cmd = new SqlCommand("UPDATE Carts SET Quantity = Quantity + @Qty, AddedAt = @AddedAt WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", conn);
+                        cmd = new SqlCommand("UPDATE Carts SET Quantity = Quantity + @Qty, AddedAt = @AddedAt WHERE CustomerId = @CustomerId AND ArtworkId = @ArtworkId", DBConnect.conn);
                     }
                     else
                     {
                         reader.Close();
-                        cmd = new SqlCommand("INSERT INTO Carts (CustomerId, ArtworkId, Quantity, AddedAt) VALUES (@CustomerId, @ArtworkId, @Qty, @AddedAt)", conn);
+                        cmd = new SqlCommand("INSERT INTO Carts (CustomerId, ArtworkId, Quantity, AddedAt) VALUES (@CustomerId, @ArtworkId, @Qty, @AddedAt)", DBConnect.conn);
                     }
                     cmd.Parameters.AddWithValue("@CustomerId", user.ProviderUserKey);
                     cmd.Parameters.AddWithValue("@ArtworkId", e.CommandArgument);
@@ -119,7 +118,7 @@ namespace ArtGallery.Controls
                     isAddedToCart = cmd.ExecuteNonQuery() > 0;
                     break;
             }
-            conn.Close();
+            DBConnect.conn.Close();
             Repeater1.DataBind();
         }
 
